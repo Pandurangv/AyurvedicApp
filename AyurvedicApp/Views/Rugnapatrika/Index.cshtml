@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/datepicker")
+@Scripts.Render("~/bundles/datepicker")
+<div class="row" data-ng-app="AyurvadApp" data-ng-controller="RugnapatrikaController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive" data-ng-show="Details==true">
+                <div class="col-md-12">
+                    <div class="col-md-8 divsearch">
+                        <input type="text" placeholder="Search" class="form-control" data-ng-model="Prefix" data-ng-change="FilterList()" />
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary" data-ng-click="FilterList()" data-toggle="tooltip" title="Search">Search</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="AddNewUI()" data-toggle="tooltip" title="New">New</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="Reset()" data-toggle="tooltip" title="Reset">Reset</button>
+                    </div>
+                    <hr />
+                </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>
+                            Patient Name
+                        </th>
+                        <th>
+                            Admit Date
+                        </th>
+                        <th>
+                            Dignosys
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                    </tr>
+                    <tbody>
+                        <tr data-ng-repeat="accounttype in SearchAdmitPatientList">
+                            <td>
+                                {{accounttype.PatientName}}
+                            </td>
+                            <td>
+                                {{accounttype.AdmitDate | mydate | date: 'dd-MM-yyyy'}}
+                            </td>
+                            <td>
+                                {{accounttype.Dignosys}}
+                            </td>
+                            <td>
+                                {{accounttype.OPDIPD}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <ul class="pagination">
+                    <li data-ng-click="First()"><a href="#"><span class="glyphicon glyphicon-step-backward"></span></a></li>
+                    <li data-ng-click="Prev()"><a href="#"><span class="glyphicon glyphicon-backward"></span></a></li>
+                    <li data-ng-click="Next()"><a href="#"><span class="glyphicon glyphicon-forward"></span></a></li>
+                    <li data-ng-click="Last()"><a href="#"><span class="glyphicon glyphicon-step-forward"></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Registration</a></li>
+            <li><a data-toggle="tab" href="#menu1">Follow Up</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group bgcolor">
+                                <label>Personal Information </label>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <div class="form-group login-group-checkbox">
+                                            <input type="radio" name="reg_gender" id="female" placeholder="OPD" data-ng-model="PatientModel.IsIPD" value="false">
+                                            <label for="female">OPD</label>
+                                            <input type="radio" name="reg_gender" id="male" placeholder="IPD" data-ng-model="PatientModel.IsIPD" value="true">
+                                            <label for="male">IPD</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>पूर्ण नाव <span class="check_required">*</span></label>
+                                    <input type="text" class="form-control" placeholder="पूर्ण नाव" data-ng-model="PatientModel.Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>पत्ता</label>
+                                    <textarea rows="3" class="form-control" placeholder="पत्ता" data-ng-model="PatientModel.Address"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>फोन <span class="check_required">*</span> </label>
+                                    <input type="text" class="form-control" placeholder="फोन" data-ng-model="PatientModel.ContactNo">
+                                </div>
+                                <div class="form-group">
+                                    <label>ई-मेल आयडी</label>
+                                    <input type="email" class="form-control" placeholder="ई-मेल आयडी" data-ng-model="PatientModel.EmailId">
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender <span class="check_required">*</span></label>
+                                    <select class="form-control" data-ng-model="PatientModel.Gender">
+                                        <option value="">Select</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>शिक्षण </label>
+                                    <input type="text" class="form-control" placeholder="शिक्षण" data-ng-model="PatientModel.Qualification">
+                                </div>
+                                <div class="form-group">
+                                    <label>Ref Doctor Name</label>
+                                    <input type="text" class="form-control" placeholder="नाव" data-ng-model="PatientModel.ReferenceDoctorName">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>दाखल दिनांक</label>
+                                    <input type="text" class="form-control" placeholder="दाखल दिनांक yyyy/MM/dd" id="txtAdmitDate">
+                                </div>
+                                <div class="form-group">
+                                    <label>जन्म तारीख</label>
+                                    <input type="text" class="form-control" placeholder="जन्म तारीख yyyy/MM/dd" id="txtBirthDate">
+                                </div>
+                                <div class="form-group">
+                                    <label>जन्म वेळ </label>
+                                    <input type="text" class="form-control" placeholder="जन्म वेळ" id="txtBirthTime">
+                                </div>
+                                <div class="form-group">
+                                    <label>वजन </label>
+                                    <input type="text" class="form-control" placeholder="वजन" data-ng-model="PatientModel.Weight">
+                                </div>
+                                <div class="form-group">
+                                    <label>रक्तगट</label>
+                                    <select class="form-control" data-ng-model="PatientModel.BloodGroup">
+                                        <option value="">Select</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>व्यवसाय</label>
+                                    <input type="text" class="form-control" placeholder="व्यवसाय" data-ng-model="PatientModel.Occupation">
+                                </div>
+                                <div class="form-group">
+                                    <label>पतीचा /वडिलांचा व्यवसाय </label>
+                                    <input type="text" class="form-control" placeholder="पतीचा /वडिलांचा व्यवसाय" data-ng-model="PatientModel.FatherOccupation">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Doctor Mobile No.</label>
+                                    <input type="text" class="form-control" placeholder="क्रमांक" data-ng-model="PatientModel.RefContact">
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default" data-ng-click="Save()">Submit</button> <button type="Reset" class="btn btn-default">Reset</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="hidden" data-ng-model="ReadmitModel.AdmitId" />
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>
+                                        IPD<span class="check_required">*</span>
+                                        <input type="checkbox" class="form-control" data-ng-model="ReadmitModel.IsIPD">
+                                    </label>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select class="form-control setMargin" data-ng-options="item as item.Name for item in PatientList track by item.PKId"
+                                                    data-ng-model="SelectedPatient"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="datepicker"
+                                         date-set-hidden="true"
+                                         date-format="dd-MM-yyyy"
+                                         button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                         button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                        <input ng-model="ReadmitModel.AdmitDate" type="text" class="angular-datepicker-input form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-3" style="margin-top:15px;">
+                                    <textarea class="form-control" data-ng-model="ReadmitModel.Dignosys" maxlength="50"></textarea>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="Save(true)" data-ng-show="Add==true">Save</button>
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="Save(false)" data-ng-show="Edit==true">Update</button>
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="CancelClick()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+    
+@Scripts.Render("~/bundles/datepicker")
+@Scripts.Render("~/bundles/rugnapatrika")

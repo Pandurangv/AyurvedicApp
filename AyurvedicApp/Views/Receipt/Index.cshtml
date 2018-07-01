@@ -1,0 +1,236 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row clearfix" data-ng-app="AyurvadApp" data-ng-controller="ReceiptController">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Receipts</h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive" data-ng-show="Details==true">
+                        <div class="col-md-12">
+                            <div class="col-md-8 divsearch">
+                                <input type="text" placeholder="Search" class="form-control" data-ng-model="Prefix" data-ng-change="FilterList()" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary" data-ng-click="FilterList()" data-toggle="tooltip" title="Search">Search</button>
+                                <button type="button" class="btn btn-primary" data-ng-click="AddNewUI()" data-toggle="tooltip" title="New">New</button>
+                                <button type="button" class="btn btn-primary" data-ng-click="Reset()" data-toggle="tooltip" title="Reset">Reset</button>
+                            </div>
+                            <hr />
+                        </div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Receipt Date
+                                </th>
+                                <th>
+                                    Patient Name
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Print
+                                </th>
+                            </tr>
+                            <tbody>
+                                <tr data-ng-repeat="receipt in SearchReceiptList">
+                                    <td>
+                                        {{receipt.ReceiptNo}}
+                                    </td>
+                                    <td>
+                                        {{receipt.ReceiptDate | mydate | date: 'dd-MM-yyyy'}}
+                                    </td>
+                                    <td>
+                                        {{receipt.PatientName}}
+                                    </td>
+                                    <td>
+                                        {{receipt.Amount}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-ng-click="GetReceiptResult(receipt)">Print</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="pagination">
+                            <li data-ng-click="First()"><a href="#"><span class="glyphicon glyphicon-step-backward"></span></a></li>
+                            <li data-ng-click="Prev()"><a href="#"><span class="glyphicon glyphicon-backward"></span></a></li>
+                            <li data-ng-click="Next()"><a href="#"><span class="glyphicon glyphicon-forward"></span></a></li>
+                            <li data-ng-click="Last()"><a href="#"><span class="glyphicon glyphicon-step-forward"></span></a></li>
+                        </ul>
+                    </div>
+
+                    <div data-ng-show="Add==true || Edit==true">
+                        <div class="form-group">
+                            <input type="hidden" data-ng-model="ReceiptModel.ReceiptNo" />
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select class="form-control setMargin" data-ng-options="item as item.Name for item in PatientList track by item.PKId"
+                                                    data-ng-model="SelectedPatient" data-ng-change="GetOutstanding(SelectedPatient)"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" data-ng-show="ErrorModel.IsName==true">
+                                        <span>{{ErrorMessage}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="txtReceiptDate" class="form-control" placeholder="Receipt Date" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" data-ng-model="ReceiptModel.Amount" placeholder="Amount" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text"  class="form-control" placeholder="Description" data-ng-model="ReceiptModel.Description" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="col-md-12">
+                                    <span>Outstanding : {{Outstanding}}</span>
+                                </div>
+                                    <br />
+
+                                    <hr />
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-primary" data-ng-click="Save(true)" data-ng-show="Add==true">Save</button>
+                                        <button type="button" class="btn btn-primary" data-ng-click="Save(false)" data-ng-show="Edit==true">Update</button>
+                                        <button type="button" class="btn btn-primary" data-ng-click="CancelClick()">Cancel</button>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div data-ng-show="Report==true" class="col-md-12">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary" data-ng-click="CancelClick()">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="PrintDiv()">Print</button>
+                            <hr />
+                        </div>
+                        <div class="col-md-12" id="PrintDiv">
+                            <div class="col-md-12 text-center"><span><strong>Patient Receipt</strong></span></div>
+                            <br />
+                            <br />
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="pull-left">
+                                                Patient Name
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-left">{{ReceiptResult.PatientName}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">
+                                                Receipt Date
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">{{ReceiptResult.ReceiptDate | mydate | date: 'dd-MM-yyyy'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="pull-left">
+                                                Amount In Words
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-left">{{AmountInWords}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">
+                                                Amount
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">{{ReceiptResult.Amount}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            <div class="col-md-12 text-center"><span><strong>Patient Receipt</strong></span></div>
+                            <br />
+                            <br />
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="pull-left">
+                                                Patient Name
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-left">{{ReceiptResult.PatientName}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">
+                                                Receipt Date
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">{{ReceiptResult.ReceiptDate | mydate | date: 'dd-MM-yyyy'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="pull-left">
+                                                Amount In Words
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-left">{{AmountInWords}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">
+                                                Amount
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="pull-right">{{ReceiptResult.Amount}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/datepicker")
+@Scripts.Render("~/bundles/Receipt")
+<script type="text/javascript">
+    function PrintDiv() {
+        $('#PrintDiv').printThis();
+    }
+</script>

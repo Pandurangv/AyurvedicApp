@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AyurvedicAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpId" />
+    </Key>
+    <Property Name="EmpId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" />
+    <Property Name="Qualification" Type="nvarchar" MaxLength="500" />
+    <Property Name="RegNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="DOB" Type="date" />
+    <Property Name="DOJ" Type="date" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="150" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+    <Property Name="Address" Type="varchar" MaxLength="50" />
+    <Property Name="IsDelete" Type="bit" />
+    <Property Name="UserType" Type="varchar" MaxLength="50" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="50" />
+    <Property Name="Pincode" Type="varchar" MaxLength="50" />
+    <Property Name="DeptId" Type="int" />
+    <Property Name="State" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PatientMaster">
+    <Key>
+      <PropertyRef Name="PKId" />
+    </Key>
+    <Property Name="PKId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PatientName" Type="nvarchar" MaxLength="50" />
+    <Property Name="AdminDate" Type="datetime" />
+    <Property Name="AdmitTime" Type="nvarchar" MaxLength="50" />
+    <Property Name="PatientType" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="100" />
+    <Property Name="ContactNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="BloodGroup" Type="nvarchar" MaxLength="6" />
+    <Property Name="BirthDate" Type="datetime" />
+    <Property Name="ReferedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="Gender" Type="varchar" MaxLength="50" />
+    <Property Name="Age" Type="int" />
+    <Property Name="AgeIn" Type="nvarchar" MaxLength="50" />
+    <Property Name="Weight" Type="nvarchar" MaxLength="150" />
+    <Property Name="Occupation" Type="varchar" MaxLength="150" />
+    <Property Name="Religion" Type="nvarchar" MaxLength="50" />
+    <Property Name="Caste" Type="nvarchar" MaxLength="50" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" />
+    <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="PastMedHistory" Type="nvarchar" MaxLength="100" />
+    <Property Name="PatientCategory" Type="nvarchar" MaxLength="50" />
+    <Property Name="FamilyHistory" Type="nvarchar" MaxLength="100" />
+    <Property Name="IsDelete" Type="bit" />
+    <Property Name="Dignosys" Type="varchar" MaxLength="50" />
+    <Property Name="PatientTypeId" Type="int" />
+    <Property Name="EmailId" Type="varchar" MaxLength="100" />
+    <Property Name="BirthTime" Type="varchar" MaxLength="50" />
+    <Property Name="RefContact" Type="varchar" MaxLength="50" />
+    <Property Name="Qualification" Type="varchar" MaxLength="150" />
+    <Property Name="Address1" Type="varchar" MaxLength="150" />
+    <Property Name="FatherOccupation" Type="varchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="ProductMaster">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="UOM" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="SubUOM" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="IsReusable" Type="bit" Nullable="false" />
+    <Property Name="IsDelete" Type="bit" Nullable="false" />
+    <Property Name="ProductTypeId" Type="int" />
+    <Property Name="ProductContent" Type="varchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="ProductType">
+    <Key>
+      <PropertyRef Name="ProductTypeId" />
+    </Key>
+    <Property Name="ProductTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductTyepe" Type="varchar" MaxLength="50" />
+    <Property Name="IsDelete" Type="bit" />
+    <Property Name="Description" Type="varchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="StockDetails">
+    <Key>
+      <PropertyRef Name="StockId" />
+    </Key>
+    <Property Name="StockId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="OpeningQty" Type="int" />
+    <Property Name="OpeningQtyDate" Type="datetime" />
+    <Property Name="InwardQty" Type="int" />
+    <Property Name="InwardPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="OutwardQty" Type="int" />
+    <Property Name="OutwardPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="DocumentNo" Type="int" />
+    <Property Name="TransactionType" Type="varchar" MaxLength="10" />
+    <Property Name="IsDelete" Type="bit" Nullable="false" />
+    <Property Name="BatchNo" Type="varchar" MaxLength="50" />
+    <Property Name="ExpiryDate" Type="datetime" />
+    <Property Name="InwardAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="OutwardAmount" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityContainer Name="AyurvedicAppModelStoreContainer">
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PatientMaster" EntityType="Self.PatientMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductMaster" EntityType="Self.ProductMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StockDetails" EntityType="Self.StockDetails" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

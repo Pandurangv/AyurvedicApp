@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/datepicker")
+@Scripts.Render("~/bundles/datepicker")
+@Scripts.Render("~/bundles/Readmit")
+<div class="container-fluid">
+    <div class="row clearfix" data-ng-app="AyurvadApp" data-ng-controller="ReadmitController">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Readmit Patient</h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive" data-ng-show="Details==true">
+                        <div class="col-md-12">
+                            <div class="col-md-8 divsearch">
+                                <input type="text" placeholder="Search" class="form-control" data-ng-model="Prefix" data-ng-change="FilterList()" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary" data-ng-click="FilterList()" data-toggle="tooltip" title="Search">Search</button>
+                                <button type="button" class="btn btn-primary" data-ng-click="AddNewUI()" data-toggle="tooltip" title="New">New</button>
+                                <button type="button" class="btn btn-primary" data-ng-click="Reset()" data-toggle="tooltip" title="Reset">Reset</button>
+                            </div>
+                            <hr />
+                        </div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>
+                                    Patient Name
+                                </th>
+                                <th>
+                                    Admit Date
+                                </th>
+                                <th>
+                                    Dignosys
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                            </tr>
+                            <tbody>
+                                <tr data-ng-repeat="accounttype in SearchAdmitPatientList">
+                                    <td>
+                                        {{accounttype.PatientName}}
+                                    </td>
+                                    <td>
+                                        {{accounttype.AdmitDate | mydate | date: 'dd-MM-yyyy'}}
+                                    </td>
+                                    <td>
+                                        {{accounttype.Dignosys}}
+                                    </td>
+                                    <td>
+                                        {{accounttype.OPDIPD}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <ul class="pagination">
+                            <li data-ng-click="First()"><a href="#"><span class="glyphicon glyphicon-step-backward"></span></a></li>
+                            <li data-ng-click="Prev()"><a href="#"><span class="glyphicon glyphicon-backward"></span></a></li>
+                            <li data-ng-click="Next()"><a href="#"><span class="glyphicon glyphicon-forward"></span></a></li>
+                            <li data-ng-click="Last()"><a href="#"><span class="glyphicon glyphicon-step-forward"></span></a></li>
+                        </ul>
+                    </div>
+
+                    <div data-ng-show="Add==true || Edit==true">
+                        <div class="form-group">
+                            <input type="hidden" data-ng-model="ReadmitModel.AdmitId" />
+                            
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>
+                                        IPD<span class="check_required">*</span>
+                                        <input type="checkbox" class="form-control" data-ng-model="ReadmitModel.IsIPD">
+                                    </label>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select class="form-control setMargin" data-ng-options="item as item.Name for item in PatientList track by item.PKId"
+                                                    data-ng-model="SelectedPatient"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="datepicker"
+                                         date-set-hidden="true"
+                                         date-format="dd-MM-yyyy"
+                                         button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                         button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                        <input ng-model="ReadmitModel.AdmitDate" type="text" class="angular-datepicker-input form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-3" style="margin-top:15px;">
+                                    <textarea class="form-control" data-ng-model="ReadmitModel.Dignosys" maxlength="50"></textarea>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="Save(true)" data-ng-show="Add==true">Save</button>
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="Save(false)" data-ng-show="Edit==true">Update</button>
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="CancelClick()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row" data-ng-app="AyurvadApp" data-ng-controller="RugnapatrikaController">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group bgcolor">
+                    <label>Personal Information </label>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>पूर्ण नाव <span class="check_required">*</span></label>
+                        <input type="text" class="form-control" placeholder="पूर्ण नाव" data-ng-model="PatientModel.Name">
+                    </div>
+                    <div class="form-group">
+                        <label>पत्ता</label>
+                        <textarea rows="3" class="form-control" placeholder="पत्ता" data-ng-model="PatientModel.Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>फोन <span class="check_required">*</span> </label>
+                        <input type="text" class="form-control" placeholder="फोन" data-ng-model="PatientModel.ContactNo">
+                    </div>
+                    <div class="form-group">
+                        <label>ई-मेल आयडी</label>
+                        <input type="email" class="form-control" placeholder="ई-मेल आयडी" data-ng-model="PatientModel.EmailId">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender <span class="check_required">*</span></label>
+                        <select class="form-control" data-ng-model="PatientModel.Gender">
+                            <option value="">Select</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>शिक्षण </label>
+                        <input type="text" class="form-control" placeholder="शिक्षण" data-ng-model="PatientModel.Qualification">
+                    </div>
+                    <div class="form-group">
+                        <label>Ref Doctor Name</label>
+                        <input type="text" class="form-control" placeholder="नाव" data-ng-model="PatientModel.ReferenceDoctorName">
+                    </div> 
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>दाखल दिनांक</label>
+                        <input type="text" class="form-control" placeholder="दाखल दिनांक" id="txtAdmitDate">
+                    </div>
+                    <div class="form-group">
+                        <label>जन्म तारीख<span class="check_required">*</span></label>
+                        <input type="text" class="form-control" placeholder="जन्म तारीख" id="txtBirthDate">
+                    </div>
+                    <div class="form-group">
+                        <label>जन्म वेळ <span class="check_required">*</span></label>
+                        <input type="text" class="form-control" placeholder="जन्म वेळ" id="txtBirthTime">
+                    </div>
+                    <div class="form-group">
+                        <label>वजन </label>
+                        <input type="text" class="form-control" placeholder="वजन" data-ng-model="PatientModel.Weight">
+                    </div>
+                    <div class="form-group">
+                        <label>रक्तगट</label>
+                        <select class="form-control" data-ng-model="PatientModel.BloodGroup">
+                            <option value="">Select</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>व्यवसाय</label>
+                        <input type="text" class="form-control" placeholder="व्यवसाय" data-ng-model="PatientModel.Occupation">
+                    </div>
+                    <div class="form-group">
+                        <label>पतीचा /वडिलांचा व्यवसाय </label>
+                        <input type="text" class="form-control" placeholder="पतीचा /वडिलांचा व्यवसाय" data-ng-model="PatientModel.FatherOccupation">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Doctor Mobile No.</label>
+                        <input type="text" class="form-control" placeholder="क्रमांक" data-ng-model="PatientModel.RefContact">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" data-ng-click="Save()">Submit</button> <button type="Reset" class="btn btn-default">Reset</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/rugnapatrika")

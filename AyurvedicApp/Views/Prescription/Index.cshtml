@@ -1,0 +1,340 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row clearfix" data-ng-app="AyurvadApp" data-ng-controller="PrescriptionController">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Prescription</h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive" data-ng-show="Details==true">
+                        <div class="col-md-12">
+                            <div class="col-md-8 divsearch">
+                                <input type="text" placeholder="Search" class="form-control" data-ng-model="Prefix" data-ng-change="FilterList()" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary" data-ng-click="FilterList()" data-toggle="tooltip" title="Search">Search</button>
+                                <button type="button" class="btn btn-primary" data-ng-click="AddNewUI()" data-toggle="tooltip" title="New">New</button>
+                                <button type="button" class="btn btn-primary" data-ng-click="Reset()" data-toggle="tooltip" title="Reset">Reset</button>
+                            </div>
+                            <hr />
+                        </div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Prescription Date
+                                </th>
+                                <th>
+                                    Patient Name
+                                </th>
+                                <th>
+                                    Print
+                                </th>
+                            </tr>
+                            <tbody>
+                                <tr data-ng-repeat="accounttype in SearchPrescriptionList">
+                                    <td>
+                                        {{accounttype.Prescription_Id}}
+                                    </td>
+                                    <td>
+                                        {{accounttype.Prescription_Date     }}
+                                    </td>
+                                    <td>
+                                        {{accounttype.PatientName}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-ng-click="GetPrescriptionResult(accounttype.Prescription_Id)">Print</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="pagination">
+                            <li data-ng-click="First()"><a href="#"><span class="glyphicon glyphicon-step-backward"></span></a></li>
+                            <li data-ng-click="Prev()"><a href="#"><span class="glyphicon glyphicon-backward"></span></a></li>
+                            <li data-ng-click="Next()"><a href="#"><span class="glyphicon glyphicon-forward"></span></a></li>
+                            <li data-ng-click="Last()"><a href="#"><span class="glyphicon glyphicon-step-forward"></span></a></li>
+                        </ul>
+                    </div>
+
+                    <div data-ng-show="Add==true || Edit==true">
+                        <div class="form-group">
+                            <input type="hidden" data-ng-model="ProductModel.ProductId" />
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select class="form-control setMargin" data-ng-options="item as item.Name for item in PatientList track by item.AdmitId"
+                                                    data-ng-model="SelectedPatient" data-ng-change="GetCharges(SelectedPatient)"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" data-ng-show="ErrorModel.IsPatientName==true">
+                                        <span>{{ErrorMessage}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="txtExamDate" class="form-control" placeholder="Prescription Date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="col-md-12 well">
+                                    <span class="col-md-12">Prescription Details</span>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <select class="form-control setMargin" data-ng-options="item as item.ProductName for item in ProductList track by item.ProductId"
+                                                        data-ng-model="SelectedProduct"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-6">
+                                            <span class="pull-left">Before Lunch:</span> 
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <input type="checkbox" data-ng-model="PrescriptionDetails.IsBeforeLunch" class="form-control pull-right" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" data-ng-model="PrescriptionDetails.Morning" class="form-control" placeholder="Morning"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" data-ng-model="PrescriptionDetails.Afternoon" class="form-control" placeholder="Afternoon"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" data-ng-model="PrescriptionDetails.Night" class="form-control" placeholder="Night"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" data-ng-model="PrescriptionDetails.NoOfDays" class="form-control" placeholder="No of Days." />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" data-ng-model="PrescriptionDetails.Quantity" class="form-control" placeholder="Quantity" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <select class="form-control setMargin" data-ng-options="item as item.ContentWith for item in ContentList track by item.ContentId"
+                                                        data-ng-model="SelectedContent"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-md-12">
+                                    <div class="col-md-6" data-ng-show="ErrorModel.IsProductName==true">
+                                        <span>{{ErrorMessage}}</span>
+                                    </div>
+                                    <div class="col-md-6" data-ng-show="ErrorModel.IsQty==true">
+                                        <span>{{ErrorMessage}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary" data-ng-click="SavePrescription()" data-ng-disabled="IsDisable">Save</button>
+                                    <button type="button" class="btn btn-primary" data-ng-click="BackClick()">Cancel</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Medicine Name
+                                                </th>
+                                                <th>
+                                                    Before Lunch
+                                                </th>
+                                                <th>
+                                                    Morning
+                                                </th>
+                                                <th>
+                                                    Afternoon
+                                                </th>
+                                                <th>
+                                                    Evening
+                                                </th>
+                                                <th>
+                                                    No of Days
+                                                </th>
+                                                <th>
+                                                    Quantity
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="products in PrescriptionDetailsList">
+                                                <td>
+                                                    {{products.ProductName}}
+                                                </td>
+                                                <td>
+                                                    {{products.IsBeforeLunch?'Yes':'No'}}
+                                                </td>
+                                                <td>
+                                                    {{products.Morning}}
+                                                </td>
+                                                <td>
+                                                    {{products.Afternoon}}
+                                                </td>
+                                                <td>
+                                                    {{products.Night}}
+                                                </td>
+                                                <td>
+                                                    {{products.NoOfDays}}
+                                                </td>
+                                                <td>
+                                                    {{products.Quantity}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Charge Name
+                                                </th>
+                                                <th>
+                                                    Amount
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="charge in ChargesList">
+                                                <td>
+                                                    {{charge.ChargeName}}
+                                                </td>
+                                                <td>
+                                                    {{charge.ChargesAmount}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="col-md-2">
+                                        <span class="pull-right"><h4>Description</h4></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <textarea data-ng-model="PrescriptionModel.Description" class="form-control" placeholder="Description" maxlength="500"></textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="pull-right"><h4>Amount</h4></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span class="pull-left"><h4>{{ChargeAmount}}</h4></span>
+                                    </div>
+                                </div>
+                                <br />
+                                <hr />
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-primary" data-ng-click="Save(true)" data-ng-show="Add==true">Save</button>
+                                    <button type="button" class="btn btn-primary" data-ng-click="Save(false)" data-ng-show="Edit==true">Update</button>
+                                    <button type="button" class="btn btn-primary" data-ng-click="CancelClick()">Cancel</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div data-ng-show="Report==true" class="col-md-12">
+                        <button type="button" class="btn btn-primary" data-ng-click="CancelClick()">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="PrintDiv()">Print</button>
+                        <hr />
+                        <div id="PrintDiv" style="margin-top:200px;">
+                            <div class="col-md-12">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-left">Patient Name</td>
+                                            <td class="text-left">{{PrescriptionResult.PatientName}}</td>
+                                            <td class="text-right">Admit Date</td>
+                                            <td class="text-left">{{PrescriptionResult.AdmitDate | mydate | date: 'dd-MM-yyyy'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left">Prescription Date</td>
+                                            <td class="text-left">{{PrescriptionResult.Prescription_Date | mydate | date: 'dd-MM-yyyy'}}</td>
+                                            <td class="text-right"></td>
+                                            <td class="text-left"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                                <hr />
+                                <div class="col-md-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Medicine Name</th>
+                                                <th>Before Lunch</th>
+                                                <th>Morning</th>
+                                                <th>Afternoon</th>
+                                                <th>Night</th>
+                                                <th>No of Days</th>
+                                                <th>Quantity</th>
+                                                <th>Content With</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="pitem in PrescriptionResult.PrescriptionDetailList">
+                                                <td>{{pitem.MedicineName}}</td>
+                                                <td>{{pitem.IsBeforeLunch?'Yes':'No'}}</td>
+                                                <td>{{pitem.Morning}}</td>
+                                                <td>{{pitem.Afternoon}}</td>
+                                                <td>{{pitem.Night}}</td>
+                                                <td>{{pitem.NoOfDays}}</td>
+                                                <td>{{pitem.Quantity}}</td>
+                                                <td>{{pitem.ContentWith==0?'--':(pitem.ContentWith==1?'With Water':(pitem.ContentWith==2?'With Honey':'With Milk'))}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <div class="col-md-12" style="margin-bottom:50px;">
+                                <span class="col-md-2">Doctor Remark</span>
+                                <span class="col-md-4">{{PrescriptionResult.Description}}</span>
+                            </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/datepicker")
+@Scripts.Render("~/bundles/Prescription")
+<script type="text/javascript">
+    function PrintDiv() {
+        $('#PrintDiv').printThis();
+    }
+    
+</script>
