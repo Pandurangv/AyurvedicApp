@@ -47,11 +47,48 @@ namespace AyurvedicApp.Models.BusinessLayer
                 PatientId=patient.PKId,
                 IsDischarge=false,
                 OPDIPD=model.IsIPD!=null?(model.IsIPD.Value?"IPD":"OPD"):"OPD",
+                Dignosys = model.Dignosys,
+                FolloUpDate = model.FollowUpDate
             };
 
             objData.PatientAdmitDetails.Add(Admit);
             objData.SaveChanges();
             response.Id = Admit.AdmitId;
+
+            if (model.ChargeList.Count > 0)
+            {
+                Invoice inv = new Invoice() { AdmitId = Admit.AdmitId, InvoiceDate = model.AdmitDate, Amount = model.ChargeList.Sum(p => p.ChargesAmount) };
+                inv.NetAmount = inv.Amount - (inv.Discount == null ? 0 : inv.Discount);
+                objData.Invoices.Add(inv);
+                objData.SaveChanges();
+                foreach (var item in model.ChargeList)
+                {
+                    InvoiceDetail invdetail = new InvoiceDetail()
+                    {
+                        Amount = item.ChargesAmount,
+                        ChargeId = item.ChargeId,
+                        Charge = item.ChargesAmount,
+                        Qty = 1,
+                        InvoiceNo = inv.InvoiceNo,
+                    };
+                    objData.InvoiceDetails.Add(invdetail);
+                }
+                objData.SaveChanges();
+
+                var patientReceipt = new Receipt()
+                {
+                    AdmitId = Admit.AdmitId,
+                    Amount = model.ChargeList.Sum(p => p.ChargesAmount),
+                    Description = "",
+                    ReceiptDate = model.AdmitDate == null ? DateTime.Now.Date : model.AdmitDate,
+                    //ReceiptNo = entProduct.ReceiptNo,
+                    IsDelete = false,
+                };
+
+                objData.Receipts.Add(patientReceipt);
+                objData.SaveChanges();
+            }
+
             response.Status = 1;
             response.ErrorMessage = "Record saved successfully.";
             return response;
@@ -77,10 +114,46 @@ namespace AyurvedicApp.Models.BusinessLayer
                 PatientId = model.PatientId,
                 IsDischarge = false,
                 OPDIPD = model.IsIPD != null ? (model.IsIPD.Value ? "IPD" : "OPD") : "OPD",
+                FolloUpDate=model.FollowUpDate,
+                Dignosys=model.Dignosys,
             };
 
             objData.PatientAdmitDetails.Add(Admit);
             objData.SaveChanges();
+            if (model.ChargeList.Count > 0)
+            {
+                Invoice inv = new Invoice() { AdmitId = Admit.AdmitId, InvoiceDate = model.AdmitDate, Amount = model.ChargeList.Sum(p => p.ChargesAmount) };
+                inv.NetAmount = inv.Amount - (inv.Discount == null ? 0 : inv.Discount);
+                objData.Invoices.Add(inv);
+                objData.SaveChanges();
+                foreach (var item in model.ChargeList)
+                {
+                    InvoiceDetail invdetail = new InvoiceDetail()
+                    {
+                        Amount = item.ChargesAmount,
+                        ChargeId = item.ChargeId,
+                        Charge = item.ChargesAmount,
+                        Qty = 1,
+                        InvoiceNo = inv.InvoiceNo,
+                    };
+                    objData.InvoiceDetails.Add(invdetail);
+                }
+                objData.SaveChanges();
+
+                var patientReceipt = new Receipt()
+                {
+                    AdmitId = Admit.AdmitId,
+                    Amount = model.ChargeList.Sum(p => p.ChargesAmount),
+                    Description = "",
+                    ReceiptDate = model.AdmitDate == null ? DateTime.Now.Date : model.AdmitDate,
+                    //ReceiptNo = entProduct.ReceiptNo,
+                    IsDelete = false,
+                };
+
+                objData.Receipts.Add(patientReceipt);
+                objData.SaveChanges();
+            }
+
             response.Status = 1;
             response.ErrorMessage = "Record saved successfully.";
             return response;
@@ -126,6 +199,7 @@ namespace AyurvedicApp.Models.BusinessLayer
                                    on model.PKId equals tbladmit.PatientId
                                    where model.IsDelete == false
                                    && tbladmit.IsDischarge== IsDischarge
+                                   orderby tbladmit.AdmitDate descending
                                         select new AdmitViewModel()
                                    {
                                        Address = model.Address,
@@ -138,7 +212,9 @@ namespace AyurvedicApp.Models.BusinessLayer
                                        IsDischarge=tbladmit.IsDischarge,
                                        Dignosys=model.Dignosys,
                                        Name=model.PatientName,
-                                   };
+                                       OPDIPD=tbladmit.OPDIPD,
+                                       FollowUpDate=tbladmit.FolloUpDate
+                                     };
 
             response.PatientList = from model in objData.PatientMasters
                                    where model.IsDelete == false
@@ -162,6 +238,16 @@ namespace AyurvedicApp.Models.BusinessLayer
                                        Name = model.PatientName,
                                        Qualification = model.Qualification
                                    };
+            response.ChargeList = from tbl in objData.Charges
+                                  where tbl.IsDelete == false
+                                  select new ChargeViewModel() {
+                                      ChargeId=tbl.ChargeId,
+                                      ChargeName=tbl.ChargeName, 
+                                      ChargesAmount=tbl.ChargeAmount,
+                                      IsConsultingCharges=tbl.IsConsultingCharges,
+                                      IsDelete=tbl.IsDelete,
+                                      IsBedCharges=tbl.IsBedCharges,
+                                  };
             return response;
         }
         

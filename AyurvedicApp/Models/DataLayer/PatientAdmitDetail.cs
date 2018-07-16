@@ -23,5 +23,7 @@ namespace AyurvedicApp.Models.DataLayer
 
         [StringLength(500)]
         public string OPDIPD { get; set; }
+
+        public DateTime? FolloUpDate { get; set; }
     }
 }

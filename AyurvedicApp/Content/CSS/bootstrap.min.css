@@ -7213,3 +7213,11 @@ button.close {
     }
 }
 /*# sourceMappingURL=bootstrap.min.css.map */
+
+.no-padding {
+    padding:0px;
+}
+
+.paddingend {
+    padding-bottom:20px;
+}

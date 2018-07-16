@@ -24,9 +24,13 @@ namespace AyurvedicApp.Models.ViewModels
         public string RefContact { get;  set; }
         public string ReferenceDoctorName { get;  set; }
         public string Weight { get;  set; }
-
+        public DateTime? FollowUpDate { get; set; }
         public long AdmitId { get; set; }
+
+        public string Dignosys { get; set; }
         public bool? IsDischarge { get; internal set; }
+
+        public List<ChargeViewModel> ChargeList { get; set; }
 
         public bool? IsIPD { get; set; }
     }
@@ -38,6 +42,8 @@ namespace AyurvedicApp.Models.ViewModels
         public IQueryable<PatientViewModel> PatientList { get; set; }
 
         public IQueryable<AdmitViewModel> AdmitPatientList { get; set; }
+
+        public IQueryable<ChargeViewModel> ChargeList { get; set; }
 
     }
 }

@@ -30,7 +30,13 @@ namespace AyurvedicApp.Models.ViewModels
         public bool? IsIPD { get; set; }
 
         public string Address { get; set; }
+
+        public DateTime? FollowUpDate { get; set; }
+
         public string Name { get; internal set; }
+
+        public List<ChargeViewModel> ChargeList { get; set; }
+
     }
 
     public class ReadmitResponse : ErrorDetails

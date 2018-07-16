@@ -196,6 +196,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ChargeController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DoctorTreatmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -300,6 +301,7 @@
     <Content Include="Scripts\JS\App.js" />
     <Content Include="Scripts\JS\bootstrap.min.js" />
     <Content Include="Scripts\JS\canvasjs.min.js" />
+    <Content Include="Scripts\JS\ChargeController.js" />
     <Content Include="Scripts\JS\Chart.bundle.js" />
     <Content Include="Scripts\JS\Chart.js" />
     <Content Include="Scripts\JS\common.js" />
@@ -373,6 +375,7 @@
     <Content Include="Views\Receipt\Index.cshtml" />
     <Content Include="Views\Readmit\Index.cshtml" />
     <Content Include="Views\PatientHistory\Index.cshtml" />
+    <Content Include="Views\Charge\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

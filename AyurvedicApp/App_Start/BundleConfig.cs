@@ -33,9 +33,11 @@ namespace AyurvedicApp
                       ));
 
 
-            bundles.Add(new ScriptBundle("~/bundles/rugnapatrika").Include("~/Scripts/Js/RugnapatrikaController.js"));
+            bundles.Add(new ScriptBundle("~/bundles/rugnapatrika").Include("~/Scripts/Js/printThis.js", "~/Scripts/Js/RugnapatrikaController.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ProductType").Include("~/Scripts/Js/ProductTypeController.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/Charge").Include("~/Scripts/Js/ChargeController.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/Prescription").Include("~/Scripts/Js/printThis.js","~/Scripts/Js/PrescriptionController.js"));
 

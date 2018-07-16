@@ -30,6 +30,12 @@ namespace AyurvedicApp.Controllers
             return Json(response,JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult GetAdmitPatientList()
+        {
+            return Json(objBLL.GetAdmitPatientList(0, false), JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult Save(PatientViewModel model)
         {

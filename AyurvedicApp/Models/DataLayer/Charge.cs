@@ -21,5 +21,7 @@ namespace AyurvedicApp.Models.DataLayer
         public bool? IsOperation { get; set; }
 
         public bool? IsDelete { get; set; }
+
+        public decimal? ChargeAmount { get; set; }
     }
 }

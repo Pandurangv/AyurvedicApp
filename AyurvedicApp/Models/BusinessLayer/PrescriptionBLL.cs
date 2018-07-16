@@ -143,25 +143,25 @@ namespace AyurvedicApp.Models.BusinessLayer
                 objData.tblPrescriptionDetails.Add(objsal);
             }
             objData.SaveChanges();
-            if (model.ChargeList.Count>0)
-            {
-                Invoice inv = new Invoice() {AdmitId=model.AdmitId,InvoiceDate=model.Prescription_Date,Amount=model.ChargeList.Sum(p=>p.ChargesAmount) };
-                inv.NetAmount = inv.Amount - (inv.Discount == null ? 0 : inv.Discount);
-                objData.Invoices.Add(inv);
-                objData.SaveChanges();
-                foreach (var item in model.ChargeList)
-                {
-                    InvoiceDetail invdetail = new InvoiceDetail() {
-                        Amount=item.ChargesAmount,
-                        ChargeId=item.ChargeId,
-                        Charge=item.ChargesAmount,
-                        Qty=1,
-                        InvoiceNo=inv.InvoiceNo,        
-                    };
-                    objData.InvoiceDetails.Add(invdetail);
-                }
-                objData.SaveChanges();
-            }
+            //if (model.ChargeList.Count>0)
+            //{
+            //    Invoice inv = new Invoice() {AdmitId=model.AdmitId,InvoiceDate=model.Prescription_Date,Amount=model.ChargeList.Sum(p=>p.ChargesAmount) };
+            //    inv.NetAmount = inv.Amount - (inv.Discount == null ? 0 : inv.Discount);
+            //    objData.Invoices.Add(inv);
+            //    objData.SaveChanges();
+            //    foreach (var item in model.ChargeList)
+            //    {
+            //        InvoiceDetail invdetail = new InvoiceDetail() {
+            //            Amount=item.ChargesAmount,
+            //            ChargeId=item.ChargeId,
+            //            Charge=item.ChargesAmount,
+            //            Qty=1,
+            //            InvoiceNo=inv.InvoiceNo,        
+            //        };
+            //        objData.InvoiceDetails.Add(invdetail);
+            //    }
+            //    objData.SaveChanges();
+            //}
 
             var admit = objData.PatientAdmitDetails.Where(p => p.AdmitId == model.AdmitId).FirstOrDefault();
             if (admit != null)

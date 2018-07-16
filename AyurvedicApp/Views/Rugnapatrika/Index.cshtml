@@ -33,6 +33,9 @@
                         <th>
                             Type
                         </th>
+                        <th>
+                            Print
+                        </th>
                     </tr>
                     <tbody>
                         <tr data-ng-repeat="accounttype in SearchAdmitPatientList">
@@ -48,6 +51,9 @@
                             <td>
                                 {{accounttype.OPDIPD}}
                             </td>
+                            <td>
+                                <span class="glyphicon glyphicon-envelope" title="Print Receipt" data-ng-click="GetPatientReceipt(accounttype)"></span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -61,7 +67,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" data-ng-show="Add==true || Edit==true">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#home">Registration</a></li>
             <li><a data-toggle="tab" href="#menu1">Follow Up</a></li>
@@ -78,9 +84,9 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <div class="form-group login-group-checkbox">
-                                            <input type="radio" name="reg_gender" id="female" placeholder="OPD" data-ng-model="PatientModel.IsIPD" value="false">
+                                            <input type="radio" name="reg_ipdopd" id="reg_opd" placeholder="OPD" data-ng-model="PatientModel.IsIPD" value="false">
                                             <label for="female">OPD</label>
-                                            <input type="radio" name="reg_gender" id="male" placeholder="IPD" data-ng-model="PatientModel.IsIPD" value="true">
+                                            <input type="radio" name="reg_ipdopd" id="reg_ipd" placeholder="IPD" data-ng-model="PatientModel.IsIPD" value="true">
                                             <label for="male">IPD</label>
                                         </div>
                                     </div>
@@ -96,6 +102,15 @@
                                 <div class="form-group">
                                     <label>फोन <span class="check_required">*</span> </label>
                                     <input type="text" class="form-control" placeholder="फोन" data-ng-model="PatientModel.ContactNo">
+                                </div>
+                                <div class="form-group">
+                                    <label>Charges <span class="check_required">*</span> </label>
+                                    <select class="form-control setMargin" data-ng-options="item as item.ChargeName for item in ChargesList track by item.ChargeId"
+                                            data-ng-model="SelectedCharge" data-ng-change="GetCharge(SelectedCharge)"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Charges Amount<span class="check_required">*</span> </label>
+                                    <label>{{SelectedCharge.ChargesAmount}}</label>
                                 </div>
                                 <div class="form-group">
                                     <label>ई-मेल आयडी</label>
@@ -118,23 +133,70 @@
                                     <input type="text" class="form-control" placeholder="नाव" data-ng-model="PatientModel.ReferenceDoctorName">
                                 </div>
                             </div>
+                            <div class="col-md-6 no-padding paddingend">
+                                <div class="col-md-12 no-padding">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>दाखल दिनांक</label>
+                                            <div class="datepicker"
+                                                 date-set-hidden="true"
+                                                 date-format="dd-MM-yyyy"
+                                                 button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                                 button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                                <input ng-model="PatientModel.AdmitDate" type="text" class="angular-datepicker-input form-control" placeholder="Admit Date" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 no-padding paddingend">
+                                <div class="col-md-12 no-padding">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Follow Up</label>
+                                            <div class="datepicker"
+                                                 date-set-hidden="true"
+                                                 date-format="dd-MM-yyyy"
+                                                 button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                                 button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                                <input ng-model="PatientModel.FollowUpDate" type="text" class="angular-datepicker-input form-control" placeholder="Follow Up Date" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-6 no-padding paddingend">
+                                <div class="col-md-12 no-padding">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>जन्म तारीख</label>
+                                            <div class="datepicker"
+                                                 date-set-hidden="true"
+                                                 date-format="dd-MM-yyyy"
+                                                 button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                                 button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                                <input ng-model="PatientModel.BirthDate" type="text" class="angular-datepicker-input form-control" placeholder="Birth Date" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>दाखल दिनांक</label>
-                                    <input type="text" class="form-control" placeholder="दाखल दिनांक yyyy/MM/dd" id="txtAdmitDate">
-                                </div>
-                                <div class="form-group">
-                                    <label>जन्म तारीख</label>
-                                    <input type="text" class="form-control" placeholder="जन्म तारीख yyyy/MM/dd" id="txtBirthDate">
+                                    <label>Dignosys </label>
+                                    <input type="text" class="form-control" placeholder="Dignosys" id="txtDignosys">
                                 </div>
                                 <div class="form-group">
                                     <label>जन्म वेळ </label>
                                     <input type="text" class="form-control" placeholder="जन्म वेळ" id="txtBirthTime">
                                 </div>
+
                                 <div class="form-group">
                                     <label>वजन </label>
                                     <input type="text" class="form-control" placeholder="वजन" data-ng-model="PatientModel.Weight">
                                 </div>
+
                                 <div class="form-group">
                                     <label>रक्तगट</label>
                                     <select class="form-control" data-ng-model="PatientModel.BloodGroup">
@@ -149,10 +211,12 @@
                                         <option value="AB-">AB-</option>
                                     </select>
                                 </div>
+
                                 <div class="form-group">
                                     <label>व्यवसाय</label>
                                     <input type="text" class="form-control" placeholder="व्यवसाय" data-ng-model="PatientModel.Occupation">
                                 </div>
+
                                 <div class="form-group">
                                     <label>पतीचा /वडिलांचा व्यवसाय </label>
                                     <input type="text" class="form-control" placeholder="पतीचा /वडिलांचा व्यवसाय" data-ng-model="PatientModel.FatherOccupation">
@@ -162,6 +226,7 @@
                                     <label>Doctor Mobile No.</label>
                                     <input type="text" class="form-control" placeholder="क्रमांक" data-ng-model="PatientModel.RefContact">
                                 </div>
+
                                 <div class="form-group">
                                     <button type="button" class="btn btn-default" data-ng-click="Save()">Submit</button> <button type="Reset" class="btn btn-default">Reset</button>
                                 </div>
@@ -181,10 +246,12 @@
                         <div class="col-md-12">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>
-                                        IPD<span class="check_required">*</span>
-                                        <input type="checkbox" class="form-control" data-ng-model="ReadmitModel.IsIPD">
-                                    </label>
+                                    <div class="form-group login-group-checkbox">
+                                        <input type="radio" name="readmit_ipdopd" id="readmit_Opd" placeholder="OPD" data-ng-model="ReadmitModel.IsIPD" value="false">
+                                        <label for="female">OPD</label>
+                                        <input type="radio" name="readmit_ipdopd" id="readmit_Ipd" placeholder="IPD" data-ng-model="ReadmitModel.IsIPD" value="true">
+                                        <label for="male">IPD</label>
+                                    </div>
                                 </div>
                             </div>
                             <br />
@@ -200,26 +267,46 @@
                             </div>
                             <br />
                             <div class="col-md-12">
-                                <div class="col-md-3">
-                                    <div class="datepicker"
-                                         date-set-hidden="true"
-                                         date-format="dd-MM-yyyy"
-                                         button-prev='<i class="fa fa-arrow-circle-left"></i>'
-                                         button-next='<i class="fa fa-arrow-circle-right"></i>'>
-                                        <input ng-model="ReadmitModel.AdmitDate" type="text" class="angular-datepicker-input form-control" />
+                                <div class="col-md-3 paddingend">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="datepicker"
+                                                 date-set-hidden="true"
+                                                 date-format="dd-MM-yyyy"
+                                                 button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                                 button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                                <input ng-model="ReadmitModel.AdmitDate" type="text" class="angular-datepicker-input form-control" placeholder="Admit Date" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <br />
                             <div class="col-md-12">
-                                <div class="col-md-3" style="margin-top:15px;">
-                                    <textarea class="form-control" data-ng-model="ReadmitModel.Dignosys" maxlength="50"></textarea>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <div class="datepicker"
+                                                 date-set-hidden="true"
+                                                 date-format="dd-MM-yyyy"
+                                                 button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                                 button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                                <input ng-model="ReadmitModel.FollowUpDate" type="text" class="angular-datepicker-input form-control" placeholder="Follow Up Date" />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <hr />
-                        </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-3" style="margin-top:15px;">
+                                                    <textarea class="form-control" data-ng-model="ReadmitModel.Dignosys" maxlength="50" placeholder="Dignosys"></textarea>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                        </div>
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="Save(true)" data-ng-show="Add==true">Save</button>
-                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="Save(false)" data-ng-show="Edit==true">Update</button>
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="SaveReadmit(true)" data-ng-show="Add==true">Save</button>
+                            <button type="button" class="btn btn-primary btnMargin" data-ng-click="SaveReadmit(false)" data-ng-show="Edit==true">Update</button>
                             <button type="button" class="btn btn-primary btnMargin" data-ng-click="CancelClick()">Cancel</button>
                         </div>
                     </div>
@@ -227,8 +314,114 @@
             </div>
         </div>
     </div>
-    
+
+    <div class="row" data-ng-show="Report==true">
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary" onclick="PrintDiv()" data-toggle="tooltip" title="Print">Print</button>
+                <button type="button" class="btn btn-primary" data-ng-click="Back()" data-toggle="tooltip" title="Back">Back</button>
+            </div>
+            <hr />
+        </div>
+        <div class="col-md-12" id="PrintDiv">
+            
+            <div class="col-md-12">
+                <div class="col-md-12 text-center"><span><strong>Patient Receipt</strong></span></div>
+                <br />
+                <br />
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="pull-left">
+                                    Patient Name
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-left">{{ReceiptResult.PatientName}}</span>
+                            </td>
+                            <td>
+                                <span class="pull-right">
+                                    Receipt Date
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-right">{{ReceiptResult.ReceiptDate | mydate | date: 'dd-MM-yyyy'}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="pull-left">
+                                    Amount In Words
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-left">{{AmountInWords}}</span>
+                            </td>
+                            <td>
+                                <span class="pull-right">
+                                    Amount
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-right">{{ReceiptResult.Amount}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div class="col-md-12 text-center"><span><strong>Patient Receipt</strong></span></div>
+                <br />
+                <br />
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="pull-left">
+                                    Patient Name
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-left">{{ReceiptResult.PatientName}}</span>
+                            </td>
+                            <td>
+                                <span class="pull-right">
+                                    Receipt Date
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-right">{{ReceiptResult.ReceiptDate | mydate | date: 'dd-MM-yyyy'}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="pull-left">
+                                    Amount In Words
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-left">{{AmountInWords}}</span>
+                            </td>
+                            <td>
+                                <span class="pull-right">
+                                    Amount
+                                </span>
+                            </td>
+                            <td>
+                                <span class="pull-right">{{ReceiptResult.Amount}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
     
 @Scripts.Render("~/bundles/datepicker")
 @Scripts.Render("~/bundles/rugnapatrika")
+<script type="text/javascript">
+    function PrintDiv() {
+        $('#PrintDiv').printThis();
+    }
+</script>

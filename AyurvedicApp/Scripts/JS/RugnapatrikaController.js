@@ -9,7 +9,11 @@
     };
 
     ReportService.GetAdmitPatientList = function (Id) {
-        return $http.get(urlBase + "/Readmit/GetAdmitPatientList");
+        return $http.get(urlBase + "/Rugnapatrika/GetAdmitPatientList");
+    };
+
+    ReportService.GetPrintReceipt = function (Id) {
+        return $http.get(urlBase + "/Receipt/PrintReceipt?AdmitId=" + Id);
     };
 
     ReportService.GetPrescriptionResult = function (PrescriptionId) {
@@ -21,7 +25,7 @@
     }
 
 
-    ReportService.Save = function (model, IsEdit) {
+    ReportService.SaveReadmit = function (model, IsEdit) {
         //var list = BaseList;
         var url = urlBase + '/Readmit/Save';
         if (IsEdit == false) {
@@ -106,7 +110,8 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
         Weight : 0,
         Occupation : "",
         Address1 : "",
-        FatherOccupation : "",
+        FatherOccupation: "",
+        Dignosys:"",
         PKId:0,
         Name: "",
         Qualification:"",
@@ -199,8 +204,65 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
     $scope.CurruntIndex = 0;
     $scope.SelectedPatient = {};
 
+    $scope.CancelClick = function () {
+        $scope.Details = true;
+        $scope.Add = false;
+        $scope.Edit = false;
+        $scope.Report = false;
+        GetAdmitPatientList();
+    }
 
-    $scope.ReadmitModel = { AdmitId: 0, AdmitDate: "", Dignosys: "", PKId: 0, IsIPD: false };
+    $scope.ChargesList = [];
+
+    $scope.SaveReadmit = function () {
+        var flag = true;
+        if ($scope.SelectedPatient.PKId == "0") {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "Please select Patient Name",
+                Type: "alert",
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+            flag = false;
+        }
+        else {
+            flag = true;
+        }
+
+        if (flag) {
+            $scope.ReadmitModel.PatientId = $scope.SelectedPatient.PKId;
+            //$scope.ReadmitModel.AdmitDate = $("#txtExamDate").val();
+            $scope.ReadmitModel.ChargeList = [];
+            $scope.ReadmitModel.ChargeList.push({ ChargeId: $scope.SelectedCharge.ChargeId, ChargesAmount: $scope.SelectedCharge.ChargesAmount });
+            ShowLoader();
+            Readmit.SaveReadmit($scope.ReadmitModel)
+               .success(function (qualifications) {
+                   HideLoader();
+                   var objShowCustomAlert = new ShowCustomAlert({
+                       Title: "",
+                       Message: "Records saved successfully.",
+                       Type: "alert",
+                   });
+                   objShowCustomAlert.ShowCustomAlertBox();
+
+                   GetAdmitPatientList();
+
+               }).error(function (error) {
+                   HideLoader();
+                   var objShowCustomAlert = new ShowCustomAlert({
+                       Title: "",
+                       Message: "Records not found.",
+                       Type: "alert",
+                   });
+                   objShowCustomAlert.ShowCustomAlertBox();
+               });
+        }
+    }
+
+    $scope.Report = false;
+
+
+    $scope.ReadmitModel = { AdmitId: 0, AdmitDate: "", Dignosys: "", PKId: 0, IsIPD: false, FollowUpDate: "" };
 
     $scope.First = function () {
         $scope.CurruntIndex = 0;
@@ -230,12 +292,12 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
 
     $scope.AddNewUI = function (isedit) {
         //$("#ddlPType").val(0);
-        $scope.ReadmitModel = { AdmitId: 0, AdmitDate: "", Dignosys: "", PatientId: 0 };
+        $scope.ReadmitModel = { AdmitId: 0, AdmitDate: "", Dignosys: "", PatientId: 0 ,FollowUpDate:""};
         $scope.PatientModel =
         {
             Address: "",
-            AdmitDate: new Date(),
-            BirthDate: new Date(),
+            AdmitDate:"",
+            BirthDate: "",
             BirthTime: "",
             BloodGroup: "",
             ContactNo: "",
@@ -251,7 +313,11 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
             Name: "",
             Qualification: "",
             IsIPD: false,
-        }
+            FollowUpDate:""
+        };
+        $('#reg_opd').prop("checked", true);
+        $('#readmit_Opd').prop("checked", true);
+
         $scope.Details = false;
         $scope.Add = true;
         $scope.Edit = false;
@@ -306,10 +372,49 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
             objShowCustomAlert.ShowCustomAlertBox();
             return false;
         }
-        
-        $scope.PatientModel.BirthDate = $("#txtBirthDate").val();
+        if ($scope.PatientModel.BirthDate == "") {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "Please select birth date.",
+                Type: "alert"
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+            return false;
+        }
+        if ($scope.PatientModel.AdmitDate == "") {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "Please select Admit date.",
+                Type: "alert"
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+            return false;
+        }
+        if ($scope.PatientModel.FollowUpDate == "") {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "Please select Follow up date.",
+                Type: "alert"
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+            return false;
+        }
+        if ($scope.SelectedCharge.ChargeId==0) {
+            var objShowCustomAlert = new ShowCustomAlert({
+                Title: "",
+                Message: "Please select Charges.",
+                Type: "alert"
+            });
+            objShowCustomAlert.ShowCustomAlertBox();
+            return false;
+        }
+        $scope.PatientModel.Dignosys = $("#txtDignosys").val();
+        //$scope.PatientModel.BirthDate = $("#txtBirthDate").val();
         $scope.PatientModel.BirthTime = $("#txtBirthTime").val();
-        $scope.PatientModel.AdmitDate = $("#txtAdmitDate").val();
+        //$scope.PatientModel.AdmitDate = $("#txtAdmitDate").val();
+        //$scope.PatientModel.FollowUpDate = $("#txtFollowUp").val();
+        $scope.PatientModel.ChargeList = [];
+        $scope.PatientModel.ChargeList.push({ ChargeId: $scope.SelectedCharge.ChargeId, ChargesAmount: $scope.SelectedCharge.ChargesAmount });
         var urlBase = GetVirtualDirectory();
         ShowLoader();
         //window.location = urlBase + "/PatientHistory";
@@ -321,20 +426,15 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
                    Message: "Record saved successfully.",
                    Type: "alert",
                    OnOKClick: function () {
-                       if ($scope.PatientModel.IsIPD) {
-                           window.location = urlBase + "/PatientHistory/Index?AdmitId=" + qualifications.Id;
-                       }
-                       else {
-                           window.location = urlBase + "/Prescription";
-                       }
+                       GetAdmitPatientList();
                    }
                });
                objShowCustomAlert.ShowCustomAlertBox();
-           }).error(function (error) {
-               HideLoader();
-               findAndCallErrorBox("", response.data.Error.Message, "alert", null, null);
-           });
-        
+           })
+           .error(function (error) {
+              HideLoader();
+              findAndCallErrorBox("", response.data.Error.Message, "alert", null, null);
+        });
     }
 
     $scope.SaveNext = function ()
@@ -392,7 +492,7 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
                            Message: "Record saved successfully.",
                            Type: "alert",
                            OnOKClick: function () {
-                               window.location = urlBase + "/Prescription";
+                                GetAdmitPatientList();
                            }
                        });
                        objShowCustomAlert.ShowCustomAlertBox();
@@ -413,6 +513,42 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
         
     }
 
+    $scope.Back = function ()
+    {
+        $scope.Details = true;
+        $scope.Add = false;
+        $scope.Edit = false;
+        $scope.Report = false;
+    }
+
+    $scope.ReceiptResult = {};
+
+    $scope.GetPatientReceipt = function (accounttype)
+    {
+        ShowLoader();
+        RugnapatrikaService.GetPrintReceipt(accounttype.AdmitId)
+           .success(function (qualifications) {
+               $scope.Details = false;
+               $scope.Add = false;
+               $scope.Edit = false;
+               $scope.Report = true;
+               $scope.ReceiptResult = qualifications[0];
+               $scope.AmountInWords = convertNumberToWords($scope.ReceiptResult.Amount);
+
+               HideLoader();
+           }).error(function (error) {
+               HideLoader();
+               var objShowCustomAlert = new ShowCustomAlert({
+                   Title: "",
+                   Message: "Records not found.",
+                   Type: "alert",
+               });
+               objShowCustomAlert.ShowCustomAlertBox();
+           });
+    }
+
+    $scope.SelectedPatient = {};
+
     function GetAdmitPatientList() {
         ShowLoader();
         RugnapatrikaService.GetAdmitPatientList()
@@ -422,7 +558,11 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
                $scope.Edit = false;
                $scope.Report = false;
                $scope.PatientList = qualifications.PatientList;
+               $scope.ChargesList = qualifications.ChargeList;
+               var charge = { ChargeId: 0, ChargeName: "---Select Charge---", ChargesAmount: 0 };
+               $scope.ChargesList.splice(0, 0, charge);
 
+               $scope.SelectedCharge = charge;
                //$("#txtExamDate").val("");
                var patient = { PKId: 0, Name: "---Select Patient---" };
                $scope.PatientList.splice(0, 0, patient);
@@ -446,14 +586,6 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
     $scope.init = function () {
         
         $(document).ready(function () {
-            $('#txtAdmitDate').datetimepicker({
-                timepicker: false,
-                format: 'Y/m/d'
-            });
-            $('#txtBirthDate').datetimepicker({
-                timepicker: false,
-                format: 'Y/m/d'
-            });
             $('#txtBirthTime').timepicker({
                 timeFormat: 'h:mm p',
                 interval: 1,
@@ -472,8 +604,8 @@ AyurvadApp.controller("RugnapatrikaController", ['$scope', '$http', '$filter', '
             $("#step4").hide();
             $("#step5").hide();
         });
+        $('#readmit_Opd').prop("checked", true);
         GetAdmitPatientList();
-
     }
 
     $scope.init();

@@ -13,7 +13,8 @@ namespace AyurvedicApp.Models.ViewModels
 
         public bool? IsConsultingCharges { get; set; }
 
-        public decimal ChargesAmount { get; set; }
-
+        public decimal? ChargesAmount { get; set; }
+        public bool? IsDelete { get; internal set; }
+        public bool? IsBedCharges { get; internal set; }
     }
 }

@@ -72,8 +72,10 @@ namespace AyurvedicApp.Models.BusinessLayer
         {
             ReceiptResponse response = new ReceiptResponse() { Status = 0, ErrorMessage = "Receipt list is empty." };
             response.ReceiptList = from entProduct in objData.Receipts
-                                   join ptype in objData.PatientMasters
-                                   on entProduct.AdmitId equals ptype.PKId
+                                   join ptype in objData.PatientAdmitDetails
+                                   on entProduct.AdmitId equals ptype.AdmitId
+                                   join patient in objData.PatientMasters
+                                   on ptype.PatientId equals patient.PKId
                                    where entProduct.IsDelete == false
                                    select new ReceiptViewModel()
                                    {
@@ -81,7 +83,7 @@ namespace AyurvedicApp.Models.BusinessLayer
                                        Amount=entProduct.Amount,
                                        Description=entProduct.Description,
                                        IsDelete=entProduct.IsDelete,
-                                       PatientName=ptype.PatientName,
+                                       PatientName=patient.PatientName,
                                        ReceiptDate=entProduct.ReceiptDate,
                                        ReceiptNo=entProduct.ReceiptNo, 
                                    };

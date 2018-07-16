@@ -24,6 +24,12 @@ namespace AyurvedicApp.Controllers
         }
 
         [HttpGet]
+        public ActionResult PrintReceipt(int AdmitId)
+        {
+            return Json(objReceipt.GetReceipts().ReceiptList.Where(p=>p.AdmitId==AdmitId), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult GetOutstanding(int PatientId)
         {
             return Json(objReceipt.GetOutstanding(PatientId), JsonRequestBehavior.AllowGet);
