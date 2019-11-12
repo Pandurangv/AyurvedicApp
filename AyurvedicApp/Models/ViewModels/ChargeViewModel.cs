@@ -17,4 +17,12 @@ namespace AyurvedicApp.Models.ViewModels
         public bool? IsDelete { get; internal set; }
         public bool? IsBedCharges { get; internal set; }
     }
+
+
+
+
+    public class ChargeResponse : ErrorDetails
+    {
+        public IQueryable<ChargeViewModel> ChargeList { get; set; }
+    }
 }

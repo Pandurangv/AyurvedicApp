@@ -24,5 +24,7 @@ namespace AyurvedicApp.Models.DataLayer
 
         [StringLength(500)]
         public string Description { get; set; }
+
+        public DateTime? FollowUpDate { get; set; }
     }
 }

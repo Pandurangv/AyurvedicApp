@@ -26,6 +26,7 @@
     };
     return ReportService;
 }]);
+
 AyurvadApp.controller("ProductTypeController", ['$scope', '$http', '$filter', '$rootScope', 'ProductTypeService', function ($scope, $http, $filter, $rootScope, ProductTypeService) {
     $scope.MainProductTypeList = [];
 

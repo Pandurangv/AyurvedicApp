@@ -28,6 +28,8 @@ namespace AyurvedicApp.Models.ViewModels
         public string ProductContent { get; set; }
     }
 
+    
+
     public class ProductResponse : ErrorDetails
     {
         public IQueryable<ProductViewModel> ProductList { get; set; }

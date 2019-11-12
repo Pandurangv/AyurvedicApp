@@ -100,241 +100,275 @@ AyurvadApp.controller("NadiParikshaController", ['$scope', '$http', '$filter', '
                var flag = false;
                if ($scope.NadiParikshaResult[0].Result > 0 && $scope.NadiParikshaResult[1].Result > 0 && $scope.NadiParikshaResult[2].Result > 0) {
                    flag = true;
-                    var barchartContainer = document.getElementById("barchartContainer").getContext('2d');
-                   var chartdata = new Chart(barchartContainer, {
-                       type: 'bar',
-                       data: {
-                           labels:
-                               [
-                                   $scope.NadiParikshaResult[0].ParamName,
-                                   $scope.NadiParikshaResult[1].ParamName,
-                                   $scope.NadiParikshaResult[2].ParamName,
-                               ],
-                           datasets: [{
-                               label: $scope.NadiParikshaResult[0].ParamName,
-                               data: [
-                                   $scope.NadiParikshaResult[0].Result,
-                                   $scope.NadiParikshaResult[1].Result,
-                                   $scope.NadiParikshaResult[2].Result
-                               ],
-                               backgroundColor: [
-                                   "#55B2D7",
-                                   "#DA4940",
-                                   "#78D755",
-                               ],
-                               borderColor: [
-                                   "#55B2D7",
-                                   "#DA4940",
-                                   "#78D755",
-                               ],
-                               borderWidth: 1
-                           }]
+                   var chart = AmCharts.makeChart("barchartContainer", {
+                       "type": "serial",
+                       "theme": "light",
+                       "marginRight": 70,
+                       "dataProvider": [{
+                           "ParamName": $scope.NadiParikshaResult[0].ParamName,
+                           "Result": $scope.NadiParikshaResult[0].Result,
+                           "Color": "#55B2D7"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[1].ParamName,
+                           "Result": $scope.NadiParikshaResult[1].Result,
+                           "Color": "#DA4940"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[2].ParamName,
+                           "Result": $scope.NadiParikshaResult[2].Result,
+                           "Color": "#78D755"
+                       }],
+                       "valueAxes": [{
+                           "axisAlpha": 0,
+                           "position": "left",
+                           "title": "Vata, Pitta and Kapha"
+                       }],
+                       "startDuration": 1,
+                       "graphs": [{
+                           "balloonText": "<b>[[category]]: [[value]]</b>",
+                           "fillColorsField": "Color",
+                           "fillAlphas": 0.9,
+                           "lineAlpha": 0.2,
+                           "type": "column",
+                           "valueField": "Result"
+                       }],
+                       "chartCursor": {
+                           "categoryBalloonEnabled": false,
+                           "cursorAlpha": 0,
+                           "zoomable": false
                        },
-                       options: {
-                           scales: {
-                               yAxes: [{
-                                   ticks: {
-                                       beginAtZero: true
-                                   }
-                               }]
-                           }
+                       "categoryField": "ParamName",
+                       "categoryAxis": {
+                           "gridPosition": "start",
+                           "labelRotation": 45
+                       },
+                       "export": {
+                           "enabled": false
+                       }
+
+                   });
+                   var chart;
+                   var legend;
+
+                   var chart = AmCharts.makeChart("chartContainer", {
+                       "type": "pie",
+                       "theme": "light",
+                       "dataProvider": [{
+                           "ParamName": $scope.NadiParikshaResult[0].ParamName,
+                           "Result": $scope.NadiParikshaResult[0].Result,
+                           "Color":"#55B2D7"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[1].ParamName,
+                           "Result": $scope.NadiParikshaResult[1].Result,
+                           "Color": "#DA4940"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[2].ParamName,
+                           "Result": $scope.NadiParikshaResult[2].Result,
+                           "Color": "#78D755"
+                       }],
+                       "valueField": "Result",
+                       "titleField": "ParamName",
+                       "colorField": "Color",
+                       "balloon": {
+                           "fixedPosition": true
+                       },
+                       "export": {
+                           "enabled": false
                        }
                    });
-                   
-                   var ctx = document.getElementById("chartContainer").getContext('2d');
-                   var config = {
-                       type: 'pie',
-                       data: {
-                           datasets: [{
-                               data: [
-                                   $scope.NadiParikshaResult[0].Result,
-                                   $scope.NadiParikshaResult[1].Result,
-                                   $scope.NadiParikshaResult[2].Result,
-                               ],
-                               backgroundColor: [
-                                   "#55B2D7",
-                                   "#DA4940",
-                                   "#78D755",
-                               ],
-                               label: 'Vata, Pitta and Kapha'
-                           }],
-                           labels: [
-                               $scope.NadiParikshaResult[0].ParamName + " " + $scope.NadiParikshaResult[0].Result + "%",
-                               $scope.NadiParikshaResult[1].ParamName + " " + $scope.NadiParikshaResult[1].Result + "%",
-                               $scope.NadiParikshaResult[2].ParamName + " " + $scope.NadiParikshaResult[2].Result + "%"
-                           ]
-                       },
-                       options: {
-                           responsive: true
-                       }
-                   };
-                   window.myPie = new Chart(ctx, config);
+
+                   setTimeout(function () {
+                       $("#chartContainer").find(".amcharts-chart-div").find("a").hide()
+                       $("#barchartContainer").find(".amcharts-chart-div").find("a").hide()
+                   }, 500);
                }
                
                if ($scope.NadiParikshaResult[3].Result > 0 && $scope.NadiParikshaResult[4].Result > 0 && $scope.NadiParikshaResult[5].Result > 0) {
                    flag = true;
-                   var barchartContainer1 = document.getElementById("barchartContainer1").getContext('2d');
-                   chartdata = new Chart(barchartContainer1, {
-                       type: 'bar',
-                       data: {
-                           labels:
-                               [
-                                    $scope.NadiParikshaResult[3].ParamName,
-                                    $scope.NadiParikshaResult[4].ParamName,
-                                    $scope.NadiParikshaResult[5].ParamName,
-                               ],
-                           datasets: [{
-                               label: $scope.NadiParikshaResult[3].ParamName,
-                               data: [
-                                   $scope.NadiParikshaResult[3].Result,
-                                   $scope.NadiParikshaResult[4].Result,
-                                   $scope.NadiParikshaResult[5].Result
-                               ],
-                               backgroundColor: [
-                                   "#55B2D7",
-                                   "#DA4940",
-                                   "#78D755",
-                               ],
-                               borderColor: [
-                                   "#55B2D7",
-                                   "#DA4940",
-                                   "#78D755",
-                               ],
-                               borderWidth: 1
-                           }]
+
+                   var chart = AmCharts.makeChart("barchartContainer1", {
+                       "type": "serial",
+                       "theme": "light",
+                       "marginRight": 70,
+                       "dataProvider": [{
+                           "ParamName": $scope.NadiParikshaResult[3].ParamName,
+                           "Result": $scope.NadiParikshaResult[3].Result,
+                           "Color": "#55B2D7"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[4].ParamName,
+                           "Result": $scope.NadiParikshaResult[4].Result,
+                           "Color": "#DA4940"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[5].ParamName,
+                           "Result": $scope.NadiParikshaResult[5].Result,
+                           "Color": "#78D755"
+                       }],
+                       "valueAxes": [{
+                           "axisAlpha": 0,
+                           "position": "left",
+                           "title": "Satwa, Rajas and Tama"
+                       }],
+                       "startDuration": 1,
+                       "graphs": [{
+                           "balloonText": "<b>[[category]]: [[value]]</b>",
+                           "fillColorsField": "Color",
+                           "fillAlphas": 0.9,
+                           "lineAlpha": 0.2,
+                           "type": "column",
+                           "valueField": "Result"
+                       }],
+                       "chartCursor": {
+                           "categoryBalloonEnabled": false,
+                           "cursorAlpha": 0,
+                           "zoomable": false
                        },
-                       options: {
-                           scales: {
-                               yAxes: [{
-                                   ticks: {
-                                       beginAtZero: true
-                                   }
-                               }]
-                           }
+                       "categoryField": "ParamName",
+                       "categoryAxis": {
+                           "gridPosition": "start",
+                           "labelRotation": 45
+                       },
+                       "export": {
+                           "enabled": false
+                       }
+
+                   });
+                   var chart;
+                   var legend;
+
+                   var chart = AmCharts.makeChart("chartContainer1", {
+                       "type": "pie",
+                       "theme": "light",
+                       "dataProvider": [{
+                           "ParamName": $scope.NadiParikshaResult[3].ParamName,
+                           "Result": $scope.NadiParikshaResult[3].Result,
+                           "Color": "#55B2D7"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[4].ParamName,
+                           "Result": $scope.NadiParikshaResult[4].Result,
+                           "Color": "#DA4940"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[5].ParamName,
+                           "Result": $scope.NadiParikshaResult[5].Result,
+                           "Color": "#78D755"
+                       }],
+                       "valueField": "Result",
+                       "titleField": "ParamName",
+                       "colorField": "Color",
+                       "balloon": {
+                           "fixedPosition": true
+                       },
+                       "export": {
+                           "enabled": false
                        }
                    });
 
-                   var ctx1 = document.getElementById("chartContainer1").getContext('2d');
-
-                   var config1 = {
-                       type: 'pie',
-                       data: {
-                           datasets: [{
-                               data: [
-                                   $scope.NadiParikshaResult[3].Result,
-                                   $scope.NadiParikshaResult[4].Result,
-                                   $scope.NadiParikshaResult[5].Result,
-                               ],
-                               backgroundColor: [
-                                   "#55B2D7",
-                                   "#DA4940",
-                                   "#78D755",
-                               ],
-                               label: 'Satwa, Rajas and Tama'
-                           }],
-                           labels: [
-                               $scope.NadiParikshaResult[3].ParamName + " " + $scope.NadiParikshaResult[3].Result + "%",
-                               $scope.NadiParikshaResult[4].ParamName + " " + $scope.NadiParikshaResult[4].Result + "%",
-                               $scope.NadiParikshaResult[5].ParamName + " " + $scope.NadiParikshaResult[5].Result + "%",
-                           ]
-                       },
-                       options: {
-                           responsive: true
-                       }
-                   };
-                   window.myPie = new Chart(ctx1, config1);
+                   setTimeout(function () {
+                       $("#chartContainer1").find(".amcharts-chart-div").find("a").hide()
+                       $("#barchartContainer1").find(".amcharts-chart-div").find("a").hide()
+                   }, 500);
                }
                
                if ($scope.NadiParikshaResult[6].Result > 0 && $scope.NadiParikshaResult[7].Result > 0 && $scope.NadiParikshaResult[8].Result > 0 &&
                    $scope.NadiParikshaResult[9].Result > 0 &&
                    $scope.NadiParikshaResult[10].Result > 0
                    ) {
-                   flag = true;
-                   var barchartContainer2 = document.getElementById("barchartContainer2").getContext('2d');
-                   var chartdata = new Chart(barchartContainer2, {
-                   type: 'bar',
-                   data: {
-                       labels:
-                           [
-                               $scope.NadiParikshaResult[6].Result,
-                               $scope.NadiParikshaResult[7].Result,
-                               $scope.NadiParikshaResult[8].Result,
-                               $scope.NadiParikshaResult[9].Result,
-                               $scope.NadiParikshaResult[10].Result,
-                           ],
-                       datasets: [{
-                           label: $scope.NadiParikshaResult[6].ParamName,
-                           data: [
-                               $scope.NadiParikshaResult[6].Result,
-                               $scope.NadiParikshaResult[7].Result,
-                               $scope.NadiParikshaResult[8].Result,
-                               $scope.NadiParikshaResult[9].Result,
-                               $scope.NadiParikshaResult[10].Result,
-                           ],
-                           backgroundColor: [
-                               "#33FFB2",
-                               "#35B384",
-                               "#49CB9A",
-                               "#43B8A6",
-                               "#2582A2",
-                           ],
-                           borderColor: [
-                               "#33FFB2",
-                               "#35B384",
-                               "#49CB9A",
-                               "#43B8A6",
-                               "#2582A2",
-                           ],
-                           borderWidth: 1
-                       }]
-                   },
-                   options: {
-                       scales: {
-                           yAxes: [{
-                               ticks: {
-                                   beginAtZero: true
-                               }
-                           }]
-                       }
-                   }
-               });
+                       flag = true;
 
-               
-               var ctx2 = document.getElementById("chartContainer2").getContext('2d');
+                       var chart = AmCharts.makeChart("barchartContainer2", {
+                           "type": "serial",
+                           "theme": "light",
+                           "marginRight": 70,
+                           "dataProvider": [{
+                               "ParamName": $scope.NadiParikshaResult[6].ParamName,
+                               "Result": $scope.NadiParikshaResult[6].Result,
+                               "Color": "#33FFB2"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[7].ParamName,
+                               "Result": $scope.NadiParikshaResult[7].Result,
+                               "Color": "#35B384"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[8].ParamName,
+                               "Result": $scope.NadiParikshaResult[8].Result,
+                               "Color": "#49CB9A"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[9].ParamName,
+                               "Result": $scope.NadiParikshaResult[9].Result,
+                               "Color": "#43B8A6"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[10].ParamName,
+                               "Result": $scope.NadiParikshaResult[10].Result,
+                               "Color": "#2582A2"
+                           }],
+                           "valueAxes": [{
+                               "axisAlpha": 0,
+                               "position": "left",
+                               "title": "Types of Vata"
+                           }],
+                           "startDuration": 1,
+                           "graphs": [{
+                               "balloonText": "<b>[[category]]: [[value]]</b>",
+                               "fillColorsField": "Color",
+                               "fillAlphas": 0.9,
+                               "lineAlpha": 0.2,
+                               "type": "column",
+                               "valueField": "Result"
+                           }],
+                           "chartCursor": {
+                               "categoryBalloonEnabled": false,
+                               "cursorAlpha": 0,
+                               "zoomable": false
+                           },
+                           "categoryField": "ParamName",
+                           "categoryAxis": {
+                               "gridPosition": "start",
+                               "labelRotation": 45
+                           },
+                           "export": {
+                               "enabled": false
+                           }
 
-               var config2 = {
-                   type: 'pie',
-                   data: {
-                       datasets: [{
-                           data: [
-                               $scope.NadiParikshaResult[6].Result,
-                               $scope.NadiParikshaResult[7].Result,
-                               $scope.NadiParikshaResult[8].Result,
-                               $scope.NadiParikshaResult[9].Result,
-                               $scope.NadiParikshaResult[10].Result,
-                           ],
-                           backgroundColor: [
-                               "#33FFB2",
-                               "#35B384",
-                               "#49CB9A",
-                               "#43B8A6",
-                               "#2582A2",
-                           ],
-                           label: 'Types of Vata'
-                       }],
-                       labels: [
-                               $scope.NadiParikshaResult[6].ParamName + " " + $scope.NadiParikshaResult[6].Result + "%",
-                               $scope.NadiParikshaResult[7].ParamName + " " + $scope.NadiParikshaResult[7].Result + "%",
-                               $scope.NadiParikshaResult[8].ParamName + " " + $scope.NadiParikshaResult[8].Result + "%",
-                               $scope.NadiParikshaResult[9].ParamName + " " + $scope.NadiParikshaResult[9].Result + "%",
-                               $scope.NadiParikshaResult[10].ParamName + " " + $scope.NadiParikshaResult[10].Result + "%",
-                            ]
-                   },
-                   options: {
-                       responsive: true
-                   }
-               };
-               window.myPie = new Chart(ctx2, config2);
+                       });
+                       var chart;
+                       var legend;
+
+                       var chart = AmCharts.makeChart("chartContainer2", {
+                           "type": "pie",
+                           "theme": "light",
+                           "dataProvider": [{
+                               "ParamName": $scope.NadiParikshaResult[6].ParamName,
+                               "Result": $scope.NadiParikshaResult[6].Result,
+                               "Color": "#33FFB2"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[7].ParamName,
+                               "Result": $scope.NadiParikshaResult[7].Result,
+                               "Color": "#35B384"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[8].ParamName,
+                               "Result": $scope.NadiParikshaResult[8].Result,
+                               "Color": "#49CB9A"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[9].ParamName,
+                               "Result": $scope.NadiParikshaResult[9].Result,
+                               "Color": "#43B8A6"
+                           }, {
+                               "ParamName": $scope.NadiParikshaResult[10].ParamName,
+                               "Result": $scope.NadiParikshaResult[10].Result,
+                               "Color": "#2582A2"
+                           }],
+                           "valueField": "Result",
+                           "titleField": "ParamName",
+                           "colorField": "Color",
+                           "balloon": {
+                               "fixedPosition": true
+                           },
+                           "export": {
+                               "enabled": false
+                           }
+                       });
+
+                       setTimeout(function () {
+                           $("#chartContainer2").find(".amcharts-chart-div").find("a").hide()
+                           $("#barchartContainer2").find(".amcharts-chart-div").find("a").hide()
+                       }, 500);
                }
                
 
@@ -342,93 +376,105 @@ AyurvadApp.controller("NadiParikshaController", ['$scope', '$http', '$filter', '
                    $scope.NadiParikshaResult[14].Result > 0 &&
                    $scope.NadiParikshaResult[15].Result > 0
                    ) {
-                   flag = true;
-                   var barchartContainer3 = document.getElementById("barchartContainer3").getContext('2d');
-                   var chartdata = new Chart(barchartContainer3, {
-                       type: 'bar',
-                       data: {
-                           labels:
-                               [
-                                   $scope.NadiParikshaResult[11].ParamName,
-                                   $scope.NadiParikshaResult[12].ParamName,
-                                   $scope.NadiParikshaResult[13].ParamName,
-                                   $scope.NadiParikshaResult[14].ParamName,
-                                   $scope.NadiParikshaResult[15].ParamName,
-                               ],
-                           datasets: [{
-                               label: $scope.NadiParikshaResult[16].ParamName,
-                               data: [
-                                   $scope.NadiParikshaResult[11].Result,
-                                   $scope.NadiParikshaResult[12].Result,
-                                   $scope.NadiParikshaResult[13].Result,
-                                   $scope.NadiParikshaResult[14].Result,
-                                   $scope.NadiParikshaResult[15].Result,
-                               ],
-                               backgroundColor: [
-                                   "#DA4940",
-                                   "#EF3C31",
-                                   "#B51A10",
-                                   "#B72B22",
-                                   "#BC453E",
-                               ],
-                               borderColor: [
-                                   "#DA4940",
-                                   "#EF3C31",
-                                   "#B51A10",
-                                   "#B72B22",
-                                   "#BC453E",
-                               ],
-                               borderWidth: 1
-                           }]
-                       },
-                       options: {
-                           scales: {
-                               yAxes: [{
-                                   ticks: {
-                                       beginAtZero: true
+                        flag = true;
+
+                           var chart = AmCharts.makeChart("barchartContainer3", {
+                                   "type": "serial",
+                                   "theme": "light",
+                                   "marginRight": 70,
+                                   "dataProvider": [{
+                                       "ParamName": $scope.NadiParikshaResult[11].ParamName,
+                                       "Result": $scope.NadiParikshaResult[11].Result,
+                                       "Color": "#DA4940"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[12].ParamName,
+                                       "Result": $scope.NadiParikshaResult[12].Result,
+                                       "Color": "#EF3C31"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[13].ParamName,
+                                       "Result": $scope.NadiParikshaResult[13].Result,
+                                       "Color": "#B51A10"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[14].ParamName,
+                                       "Result": $scope.NadiParikshaResult[14].Result,
+                                       "Color": "#B72B22"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[15].ParamName,
+                                       "Result": $scope.NadiParikshaResult[15].Result,
+                                       "Color": "#BC453E"
+                                   }],
+                                   "valueAxes": [{
+                                       "axisAlpha": 0,
+                                       "position": "left",
+                                       "title": "Types of Pitta"
+                                   }],
+                                   "startDuration": 1,
+                                   "graphs": [{
+                                       "balloonText": "<b>[[category]]: [[value]]</b>",
+                                       "fillColorsField": "Color",
+                                       "fillAlphas": 0.9,
+                                       "lineAlpha": 0.2,
+                                       "type": "column",
+                                       "valueField": "Result"
+                                   }],
+                                   "chartCursor": {
+                                       "categoryBalloonEnabled": false,
+                                       "cursorAlpha": 0,
+                                       "zoomable": false
+                                   },
+                                   "categoryField": "ParamName",
+                                   "categoryAxis": {
+                                       "gridPosition": "start",
+                                       "labelRotation": 45
+                                   },
+                                   "export": {
+                                       "enabled": false
                                    }
-                               }]
-                           }
+
+                               });
+                               var chart;
+                               var legend;
+
+                               var chart = AmCharts.makeChart("chartContainer3", {
+                                   "type": "pie",
+                                   "theme": "light",
+                                   "dataProvider": [{
+                                       "ParamName": $scope.NadiParikshaResult[11].ParamName,
+                                       "Result": $scope.NadiParikshaResult[11].Result,
+                                       "Color": "#DA4940"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[12].ParamName,
+                                       "Result": $scope.NadiParikshaResult[12].Result,
+                                       "Color": "#EF3C31"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[13].ParamName,
+                                       "Result": $scope.NadiParikshaResult[13].Result,
+                                       "Color": "#B51A10"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[14].ParamName,
+                                       "Result": $scope.NadiParikshaResult[14].Result,
+                                       "Color": "#B72B22"
+                                   }, {
+                                       "ParamName": $scope.NadiParikshaResult[15].ParamName,
+                                       "Result": $scope.NadiParikshaResult[15].Result,
+                                       "Color": "#BC453E"
+                                   }],
+                                   "valueField": "Result",
+                                   "titleField": "ParamName",
+                                   "colorField": "Color",
+                                   "balloon": {
+                                       "fixedPosition": true
+                                   },
+                                   "export": {
+                                       "enabled": false
+                                   }
+                               });
+
+                               setTimeout(function () {
+                                   $("#chartContainer3").find(".amcharts-chart-div").find("a").hide()
+                                   $("#barchartContainer3").find(".amcharts-chart-div").find("a").hide()
+                               }, 500);
                        }
-                   });
-
-
-                   var ctx3 = document.getElementById("chartContainer3").getContext('2d');
-
-                   var config3 = {
-                       type: 'pie',
-                       data: {
-                           datasets: [{
-                               data: [
-                                   $scope.NadiParikshaResult[11].Result,
-                                   $scope.NadiParikshaResult[12].Result,
-                                   $scope.NadiParikshaResult[13].Result,
-                                   $scope.NadiParikshaResult[14].Result,
-                                   $scope.NadiParikshaResult[15].Result,
-                               ],
-                               backgroundColor: [
-                                   "#DA4940",
-                                   "#EF3C31",
-                                   "#B51A10",
-                                   "#B72B22",
-                                   "#BC453E",
-                               ],
-                               label: 'Types of Pitta'
-                           }],
-                           labels: [
-                                   $scope.NadiParikshaResult[11].ParamName + " " + $scope.NadiParikshaResult[11].Result + "%",
-                                   $scope.NadiParikshaResult[12].ParamName + " " + $scope.NadiParikshaResult[12].Result + "%",
-                                   $scope.NadiParikshaResult[13].ParamName + " " + $scope.NadiParikshaResult[13].Result + "%",
-                                   $scope.NadiParikshaResult[14].ParamName + " " + $scope.NadiParikshaResult[14].Result + "%",
-                                   $scope.NadiParikshaResult[15].ParamName + " " + $scope.NadiParikshaResult[15].Result + "%",
-                           ]
-                       },
-                       options: {
-                           responsive: true
-                       }
-                   };
-                   window.myPie = new Chart(ctx3, config3);
-               }
 
                
 
@@ -437,91 +483,103 @@ AyurvadApp.controller("NadiParikshaController", ['$scope', '$http', '$filter', '
                    $scope.NadiParikshaResult[20].Result > 0
                    ) {
                    flag = true;
-                   var barchartContainer4 = document.getElementById("barchartContainer4").getContext('2d');
-                   var chartdata = new Chart(barchartContainer4, {
-                       type: 'bar',
-                       data: {
-                           labels:
-                               [
-                                   $scope.NadiParikshaResult[16].ParamName,
-                                   $scope.NadiParikshaResult[17].ParamName,
-                                   $scope.NadiParikshaResult[18].ParamName,
-                                   $scope.NadiParikshaResult[19].ParamName,
-                                   $scope.NadiParikshaResult[20].ParamName,
-                               ],
-                           datasets: [{
-                               label: $scope.NadiParikshaResult[16].ParamName,
-                               data: [
-                                   $scope.NadiParikshaResult[16].Result,
-                                   $scope.NadiParikshaResult[17].Result,
-                                   $scope.NadiParikshaResult[18].Result,
-                                   $scope.NadiParikshaResult[19].Result,
-                                   $scope.NadiParikshaResult[20].Result,
-                               ],
-                               backgroundColor: [
-                                   "#62BC3E",
-                                   "#59BE31",
-                                   "#4FC122",
-                                   "#71E742",
-                                   "#5CEC23",
-                               ],
-                               borderColor: [
-                                   "#62BC3E",
-                                   "#59BE31",
-                                   "#4FC122",
-                                   "#71E742",
-                                   "#5CEC23",
-                               ],
-                               borderWidth: 1
-                           }]
+
+                   var chart = AmCharts.makeChart("barchartContainer4", {
+                       "type": "serial",
+                       "theme": "light",
+                       "marginRight": 70,
+                       "dataProvider": [{
+                           "ParamName": $scope.NadiParikshaResult[16].ParamName,
+                           "Result": $scope.NadiParikshaResult[16].Result,
+                           "Color": "#62BC3E"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[17].ParamName,
+                           "Result": $scope.NadiParikshaResult[17].Result,
+                           "Color": "#59BE31"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[18].ParamName,
+                           "Result": $scope.NadiParikshaResult[18].Result,
+                           "Color": "#4FC122"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[19].ParamName,
+                           "Result": $scope.NadiParikshaResult[19].Result,
+                           "Color": "#71E742"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[20].ParamName,
+                           "Result": $scope.NadiParikshaResult[20].Result,
+                           "Color": "#5CEC23"
+                       }],
+                       "valueAxes": [{
+                           "axisAlpha": 0,
+                           "position": "left",
+                           "title": "Types of Kapha"
+                       }],
+                       "startDuration": 1,
+                       "graphs": [{
+                           "balloonText": "<b>[[category]]: [[value]]</b>",
+                           "fillColorsField": "Color",
+                           "fillAlphas": 0.9,
+                           "lineAlpha": 0.2,
+                           "type": "column",
+                           "valueField": "Result"
+                       }],
+                       "chartCursor": {
+                           "categoryBalloonEnabled": false,
+                           "cursorAlpha": 0,
+                           "zoomable": false
                        },
-                       options: {
-                           scales: {
-                               yAxes: [{
-                                   ticks: {
-                                       beginAtZero: true
-                                   }
-                               }]
-                           }
+                       "categoryField": "ParamName",
+                       "categoryAxis": {
+                           "gridPosition": "start",
+                           "labelRotation": 45
+                       },
+                       "export": {
+                           "enabled": false
+                       }
+
+                   });
+                   var chart;
+                   var legend;
+
+                   var chart = AmCharts.makeChart("chartContainer4", {
+                       "type": "pie",
+                       "theme": "light",
+                       "dataProvider": [{
+                           "ParamName": $scope.NadiParikshaResult[16].ParamName,
+                           "Result": $scope.NadiParikshaResult[16].Result,
+                           "Color": "#62BC3E"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[17].ParamName,
+                           "Result": $scope.NadiParikshaResult[17].Result,
+                           "Color": "#59BE31"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[18].ParamName,
+                           "Result": $scope.NadiParikshaResult[18].Result,
+                           "Color": "#4FC122"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[19].ParamName,
+                           "Result": $scope.NadiParikshaResult[19].Result,
+                           "Color": "#71E742"
+                       }, {
+                           "ParamName": $scope.NadiParikshaResult[20].ParamName,
+                           "Result": $scope.NadiParikshaResult[20].Result,
+                           "Color": "#5CEC23"
+                       }],
+                       "valueField": "Result",
+                       "titleField": "ParamName",
+                       "colorField": "Color",
+                       "balloon": {
+                           "fixedPosition": true
+                       },
+                       "export": {
+                           "enabled": false
                        }
                    });
 
-
-                   var ctx4 = document.getElementById("chartContainer4").getContext('2d');
-
-                   var config4 = {
-                       type: 'pie',
-                       data: {
-                           datasets: [{
-                               data: [
-                                   $scope.NadiParikshaResult[16].Result,
-                                   $scope.NadiParikshaResult[17].Result,
-                                   $scope.NadiParikshaResult[18].Result,
-                                   $scope.NadiParikshaResult[19].Result,
-                                   $scope.NadiParikshaResult[20].Result,
-                               ],
-                               backgroundColor: [
-                                   "#62BC3E",
-                                   "#59BE31",
-                                   "#4FC122",
-                                   "#71E742",
-                                   "#5CEC23",
-                               ],
-                               label: 'Types of Kapha'
-                           }],
-                           labels: [
-                                   $scope.NadiParikshaResult[16].ParamName + " " + $scope.NadiParikshaResult[16].Result + "%",
-                                   $scope.NadiParikshaResult[17].ParamName + " " + $scope.NadiParikshaResult[17].Result + "%",
-                                   $scope.NadiParikshaResult[18].ParamName + " " + $scope.NadiParikshaResult[18].Result + "%",
-                                   $scope.NadiParikshaResult[19].ParamName + " " + $scope.NadiParikshaResult[19].Result + "%",
-                                   $scope.NadiParikshaResult[20].ParamName + " " + $scope.NadiParikshaResult[20].Result + "%",
-                           ]
-                       },
-                       options: {
-                           responsive: true
-                       }
-                   };
-                   window.myPie = new Chart(ctx4, config4);
+                   setTimeout(function () {
+                       $("#chartContainer4").find(".amcharts-chart-div").find("a").hide()
+                       $("#barchartContainer4").find(".amcharts-chart-div").find("a").hide()
+                   }, 500);
                }
 
                HideLoader();

@@ -3,7 +3,12 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 <div class="container-fluid">
     <div class="row clearfix" data-ng-app="AyurvadApp" data-ng-controller="NadiParikshaController">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -155,35 +160,35 @@
                         </div>
                         <br />
                         <div class="col-md-6">
-                            <canvas id="chartContainer" style="width:40%"></canvas>
+                            <div id="chartContainer" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="barchartContainer" style="width:40%"></canvas>
+                            <div id="barchartContainer" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="chartContainer1" style="width:40%"></canvas>
+                            <div id="chartContainer1" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="barchartContainer1" style="width:40%"></canvas>
+                            <div id="barchartContainer1" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="chartContainer2" style="width:40%"></canvas>
+                            <div id="chartContainer2" style="width:100%;height:220px;"></div>
                         oo</div>9
 
                         <div class="col-md-6">
-                            <canvas id="barchartContainer2" style="width:40%"></canvas>
+                            <div id="barchartContainer2" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="chartContainer3" style="width:40%"></canvas>
+                            <div id="chartContainer3" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="barchartContainer3" style="width:40%"></canvas>
+                            <div id="barchartContainer3" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="chartContainer4" style="width:40%"></canvas>
+                            <div id="chartContainer4" style="width:100%;height:220px;"></div>
                         </div>
                         <div class="col-md-6">
-                            <canvas id="barchartContainer4" style="width:40%"></canvas>
+                            <div id="barchartContainer4" style="width:100%;height:220px;"></div>
                         </div>
                     </div>
                 </div>
@@ -197,27 +202,27 @@
 <script type="text/javascript">
     function PrintDiv() {
         var PrintDiv = document.getElementById('PrintDiv').innerHTML;//.toDataURL('image/jpeg');
-        var chartContainer = document.getElementById("chartContainer").toDataURL("image/jpeg");
-        var barchartContainer = document.getElementById("barchartContainer").toDataURL("image/jpeg");
-        var chartContainer1 = document.getElementById("chartContainer1").toDataURL("image/jpeg");
-        var barchartContainer1 = document.getElementById("barchartContainer1").toDataURL("image/jpeg");
-        var chartContainer2 = document.getElementById("chartContainer2").toDataURL("image/jpeg");
-        var barchartContainer2 = document.getElementById("barchartContainer2").toDataURL("image/jpeg");
-        var chartContainer3 = document.getElementById("chartContainer3").toDataURL("image/jpeg");
-        var barchartContainer3 = document.getElementById("barchartContainer3").toDataURL("image/jpeg");
-        var chartContainer4 = document.getElementById("chartContainer4").toDataURL("image/jpeg");
-        var barchartContainer4 = document.getElementById("barchartContainer4").toDataURL("image/jpeg");
+        var chartContainer = document.getElementById("chartContainer").innerHTML;
+        var barchartContainer = document.getElementById("barchartContainer").innerHTML;
+        var chartContainer1 = document.getElementById("chartContainer1").innerHTML;
+        var barchartContainer1 = document.getElementById("barchartContainer1").innerHTML;
+        var chartContainer2 = document.getElementById("chartContainer2").innerHTML;
+        var barchartContainer2 = document.getElementById("barchartContainer2").innerHTML;
+        var chartContainer3 = document.getElementById("chartContainer3").innerHTML;
+        var barchartContainer3 = document.getElementById("barchartContainer3").innerHTML;
+        var chartContainer4 = document.getElementById("chartContainer4").innerHTML;
+        var barchartContainer4 = document.getElementById("barchartContainer4").innerHTML;
         var windowContent = '<!DOCTYPE html>';
         windowContent += '<html>'
         windowContent += '<head><title>Nadi Pariksha</title></head>';
         windowContent += '<body onload="window.print()">'
         windowContent += PrintDiv;
         var chartdata = '<div class="col-md-12"><table class="table table-bordered" style="width:100%"><tbody>';
-        chartdata += '<tr style="width:100%"><td style="width:50%"><img src="' + chartContainer + '" height="300px" width="100%"></td><td style="width:50%"><img src="' + barchartContainer + '" height="300px" width="100%"></td></tr>';
-        chartdata += '<tr style="width:100%"><td style="width:50%"><img src="' + chartContainer1 + '" height="300px" width="100%"></td><td style="width:50%"><img src="' + barchartContainer1 + '" height="300px" width="100%"></td></tr>';
-        chartdata += '<tr style="width:100%"><td style="width:50%"><img src="' + chartContainer2 + '" height="300px" width="100%"></td><td style="width:50%"><img src="' + barchartContainer2 + '" height="300px" width="100%"></td></tr>';
-        chartdata += '<tr style="width:100%"><td style="width:50%"><img src="' + chartContainer3 + '" height="300px" width="100%"></td><td style="width:50%"><img src="' + barchartContainer3 + '" height="300px" width="100%"></td></tr>';
-        chartdata += '<tr style="width:100%"><td style="width:50%"><img src="' + chartContainer4 + '" height="300px" width="100%"></td><td style="width:50%"><img src="' + barchartContainer4 + '" height="300px" width="100%"></td></tr>';
+        chartdata += '<tr style="width:100%"><td style="width:50%">' + chartContainer + '</td><td style="width:50%">' + barchartContainer + '</td></tr>';
+        chartdata += '<tr style="width:100%"><td style="width:50%">' + chartContainer1 + '</td><td style="width:50%">' + barchartContainer1 + '</td></tr>';
+        chartdata += '<tr style="width:100%"><td style="width:50%">' + chartContainer2 + '</td><td style="width:50%">' + barchartContainer2 + '</td></tr>';
+        chartdata += '<tr style="width:100%"><td style="width:50%">' + chartContainer3 + '</td><td style="width:50%">' + barchartContainer3 + '</td></tr>';
+        chartdata += '<tr style="width:100%"><td style="width:50%">' + chartContainer4 + '</td><td style="width:50%">' + barchartContainer4 + '</td></tr>';
         chartdata += '</tbody></table></div>';
         windowContent += '</body>';
         windowContent += '</html>';

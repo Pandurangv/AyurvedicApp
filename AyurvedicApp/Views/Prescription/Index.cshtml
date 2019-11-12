@@ -2,7 +2,8 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@Styles.Render("~/Content/datepicker")
+@Scripts.Render("~/bundles/datepicker")
 <div class="container-fluid">
     <div class="row clearfix" data-ng-app="AyurvadApp" data-ng-controller="PrescriptionController">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -44,7 +45,7 @@
                                         {{accounttype.Prescription_Id}}
                                     </td>
                                     <td>
-                                        {{accounttype.Prescription_Date     }}
+                                        {{accounttype.Prescription_Date | mydate | date: 'dd-MM-yyyy'}}
                                     </td>
                                     <td>
                                         {{accounttype.PatientName}}
@@ -78,7 +79,23 @@
                                         <span>{{ErrorMessage}}</span>
                                     </div>
                                 </div>
+                                <br />
+                                <div class="col-md-6" style="padding-left:0px">
+                                    <div class="col-md-12" style="padding-left:0px">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="datepicker"
+                                                     date-set-hidden="true"
+                                                     date-format="dd-MM-yyyy"
+                                                     button-prev='<i class="fa fa-arrow-circle-left"></i>'
+                                                     button-next='<i class="fa fa-arrow-circle-right"></i>'>
+                                                    <input ng-model="PrescriptionModel.FollowUpDate" type="text" class="angular-datepicker-input form-control" placeholder="Follow Up Date" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="form-line">

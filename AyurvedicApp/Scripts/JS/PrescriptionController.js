@@ -65,7 +65,7 @@ AyurvadApp.controller("PrescriptionController", ['$scope', '$http', '$filter', '
 
     $scope.SelectedProduct = {};
 
-    $scope.PrescriptionModel = { Prescription_Id: 0, Prescription_Date: "", AdmitId: 0, Description :""};
+    $scope.PrescriptionModel = { Prescription_Id: 0, Prescription_Date: "", AdmitId: 0, Description: "", FollowUpDate :""};
 
     
 

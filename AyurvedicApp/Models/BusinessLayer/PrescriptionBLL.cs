@@ -29,6 +29,7 @@ namespace AyurvedicApp.Models.BusinessLayer
                                              IsDressing=tbl.IsDressing,
                                              PatientName=tblpatient.PatientName,
                                              Prescription_Date=tbl.Prescription_Date,
+                                             FollowUpDate=tbl.FollowUpDate,
                                              IsDelete=tbl.IsDelete
                                          });
 
@@ -83,6 +84,7 @@ namespace AyurvedicApp.Models.BusinessLayer
                                              IsDressing = tbl.IsDressing,
                                              PatientName = tblpatient.PatientName,
                                              Prescription_Date = tbl.Prescription_Date,
+                                             FollowUpDate=tbl.FollowUpDate,
                                              AdmitDate=tbladmit.AdmitDate,
                                              IsDelete = tbl.IsDelete,
                                              PrescriptionDetailList=(from presd in objData.tblPrescriptionDetails
@@ -118,8 +120,8 @@ namespace AyurvedicApp.Models.BusinessLayer
                 AdmitId = tbl.AdmitId,
                 Description = tbl.Description,
                 IsDressing = tbl.IsDressing,
-                //PatientName = tblpatient.PatientName,
                 Prescription_Date = tbl.Prescription_Date,
+                FollowUpDate = model.FollowUpDate,
                 IsDelete = false
             };
             objData.tblPrescriptions.Add(pres);

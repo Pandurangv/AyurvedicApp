@@ -28,6 +28,9 @@ namespace AyurvedicApp.Models.ViewModels
 
         public DateTime? Prescription_Date { get; set; }
 
+        public DateTime? FollowUpDate { get; set; }
+
+
         public long? AdmitId { get; set; }
 
         public string PatientName { get; set; }

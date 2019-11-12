@@ -149,23 +149,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 no-padding paddingend">
-                                <div class="col-md-12 no-padding">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Follow Up</label>
-                                            <div class="datepicker"
-                                                 date-set-hidden="true"
-                                                 date-format="dd-MM-yyyy"
-                                                 button-prev='<i class="fa fa-arrow-circle-left"></i>'
-                                                 button-next='<i class="fa fa-arrow-circle-right"></i>'>
-                                                <input ng-model="PatientModel.FollowUpDate" type="text" class="angular-datepicker-input form-control" placeholder="Follow Up Date" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
+                            
                             <div class="col-md-6 no-padding paddingend">
                                 <div class="col-md-12 no-padding">
                                     <div class="col-md-6">
@@ -283,27 +267,12 @@
                             </div>
                             <br />
                             <div class="col-md-12">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <div class="datepicker"
-                                                 date-set-hidden="true"
-                                                 date-format="dd-MM-yyyy"
-                                                 button-prev='<i class="fa fa-arrow-circle-left"></i>'
-                                                 button-next='<i class="fa fa-arrow-circle-right"></i>'>
-                                                <input ng-model="ReadmitModel.FollowUpDate" type="text" class="angular-datepicker-input form-control" placeholder="Follow Up Date" />
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-md-3" style="margin-top:15px;">
+                                    <textarea class="form-control" data-ng-model="ReadmitModel.Dignosys" maxlength="50" placeholder="Dignosys"></textarea>
                                 </div>
                             </div>
-                                            <div class="col-md-12">
-                                                <div class="col-md-3" style="margin-top:15px;">
-                                                    <textarea class="form-control" data-ng-model="ReadmitModel.Dignosys" maxlength="50" placeholder="Dignosys"></textarea>
-                                                </div>
-                                            </div>
-                                            <hr />
-                                        </div>
+                            <hr />
+                        </div>
                         <div class="col-md-12">
                             <button type="button" class="btn btn-primary btnMargin" data-ng-click="SaveReadmit(true)" data-ng-show="Add==true">Save</button>
                             <button type="button" class="btn btn-primary btnMargin" data-ng-click="SaveReadmit(false)" data-ng-show="Edit==true">Update</button>
